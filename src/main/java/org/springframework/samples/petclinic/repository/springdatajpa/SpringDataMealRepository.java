@@ -17,7 +17,7 @@
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.samples.petclinic.model.Meal;
 import org.springframework.samples.petclinic.repository.MealRepository;
 
@@ -28,6 +28,6 @@ import org.springframework.samples.petclinic.repository.MealRepository;
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataMealRepository extends MealRepository, Repository<Meal, Integer>, MealRepositoryOverride {
+public interface SpringDataMealRepository extends MealRepository, PagingAndSortingRepository<Meal, Integer>, MealRepositoryOverride {
 
 }

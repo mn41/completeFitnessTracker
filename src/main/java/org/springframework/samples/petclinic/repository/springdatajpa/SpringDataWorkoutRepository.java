@@ -17,7 +17,7 @@
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.samples.petclinic.model.Workout;
 import org.springframework.samples.petclinic.repository.WorkoutRepository;
 
@@ -28,7 +28,7 @@ import org.springframework.samples.petclinic.repository.WorkoutRepository;
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataWorkoutRepository extends WorkoutRepository, Repository<Workout, Integer>, WorkoutRepositoryOverride {
+public interface SpringDataWorkoutRepository extends WorkoutRepository, PagingAndSortingRepository<Workout, Integer>, WorkoutRepositoryOverride {
 
     public void delete(Workout workout);
 }

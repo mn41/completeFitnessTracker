@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
@@ -32,7 +32,7 @@ import org.springframework.samples.petclinic.repository.OwnerRepository;
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataOwnerRepository extends OwnerRepository, Repository<Owner, Integer> {
+public interface SpringDataOwnerRepository extends OwnerRepository, PagingAndSortingRepository<Owner, Integer> {
 
     @Override
     @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")

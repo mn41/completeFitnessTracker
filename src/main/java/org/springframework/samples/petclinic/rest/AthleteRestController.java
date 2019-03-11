@@ -108,6 +108,7 @@ public class AthleteRestController {
 			return new ResponseEntity<Athlete>(headers, HttpStatus.BAD_REQUEST);
         }
 
+
         if (this.clinicService.athleteExistsByUsername(athlete.getUsername())){
             Athlete currentAthlete = this.clinicService.findAthleteByUsername(athlete.getUsername());
             if(currentAthlete.getPassword().equals(athlete.getPassword())){

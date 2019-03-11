@@ -19,7 +19,7 @@ package org.springframework.samples.petclinic.repository.springdatajpa;
 import java.util.Collection;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.samples.petclinic.model.Food;
 import org.springframework.samples.petclinic.repository.FoodRepository;
 
@@ -30,7 +30,7 @@ import org.springframework.samples.petclinic.repository.FoodRepository;
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataFoodRepository extends FoodRepository, Repository<Food, Integer>, FoodRepositoryOverride {
+public interface SpringDataFoodRepository extends FoodRepository, PagingAndSortingRepository<Food, Integer>, FoodRepositoryOverride {
 
     Collection<Food> findByMealId(int meal_id);
 

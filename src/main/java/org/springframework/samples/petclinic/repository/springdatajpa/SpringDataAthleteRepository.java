@@ -19,7 +19,7 @@ package org.springframework.samples.petclinic.repository.springdatajpa;
 import java.util.Collection;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.samples.petclinic.model.Athlete;
 import org.springframework.samples.petclinic.repository.AthleteRepository;
 
@@ -30,7 +30,7 @@ import org.springframework.samples.petclinic.repository.AthleteRepository;
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataAthleteRepository extends AthleteRepository, Repository<Athlete, Integer>, AthleteRepositoryOverride {
+public interface SpringDataAthleteRepository extends AthleteRepository, PagingAndSortingRepository<Athlete, Integer>, AthleteRepositoryOverride {
 
 
 }
