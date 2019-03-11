@@ -48,7 +48,7 @@ public class JacksonCustomFoodSerializer extends StdSerializer<Food> {
 		if (food == null)  {
 			throw new IOException("Cannot serialize Food object - food or food.pet is null");
         }
-        Format formatter = new SimpleDateFormat("yyyy/MM/dd");
+
 		jgen.writeStartObject();
 		if (food.getId() == null) {
 			jgen.writeNullField("id");

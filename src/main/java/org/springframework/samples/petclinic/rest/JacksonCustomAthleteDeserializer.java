@@ -54,7 +54,7 @@ public class JacksonCustomAthleteDeserializer extends StdDeserializer<Athlete> {
         String password = node.get("password").asText();
         String email = node.get("email").asText();
 
-		if (!(athleteId == 0)) {
+		if (!(athleteId == -1)) {
 			athlete.setId(athleteId);
         }
 

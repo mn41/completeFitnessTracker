@@ -21,6 +21,8 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.model.Workout;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -84,15 +86,17 @@ public class ExerciseRestController {
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
-	@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Exercise> addExercise(@RequestBody @Valid Exercise exercise, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
+	@RequestMapping(value = "/{workoutId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Exercise> addExercise(@PathVariable("workoutId") int workoutId, @RequestBody @Valid Exercise exercise, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
 		HttpHeaders headers = new HttpHeaders();
 		if(bindingResult.hasErrors() || (exercise == null)){
 			errors.addAllErrors(bindingResult);
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Exercise>(headers, HttpStatus.BAD_REQUEST);
-		}
+        }
+        Workout workout = this.clinicService.findWorkoutById(workoutId);
+        exercise.setWorkout(workout);
 		this.clinicService.saveExercise(exercise);
 		headers.setLocation(ucBuilder.path("/api/exercises/{id}").buildAndExpand(exercise.getId()).toUri());
 		return new ResponseEntity<Exercise>(exercise, headers, HttpStatus.CREATED);
@@ -111,7 +115,14 @@ public class ExerciseRestController {
 		Exercise currentExercise = this.clinicService.findExerciseById(exerciseId);
 		if(currentExercise == null){
 			return new ResponseEntity<Exercise>(HttpStatus.NOT_FOUND);
-		}
+        }
+
+        currentExercise.setExerciseName(exercise.getExerciseName());
+        currentExercise.setWeight(exercise.getWeight());
+        currentExercise.setReps(exercise.getReps());
+        currentExercise.setElapsedTime(exercise.getElapsedTime());
+        currentExercise.setSequenceNumber(exercise.getSequenceNumber());
+
 		this.clinicService.saveExercise(currentExercise);
 		return new ResponseEntity<Exercise>(currentExercise, HttpStatus.NO_CONTENT);
 	}

@@ -21,9 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.samples.petclinic.model.Athlete;
 import org.springframework.samples.petclinic.model.Workout;
-import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.model.Exercise;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,6 +50,7 @@ public class JacksonCustomWorkoutDeserializer extends StdDeserializer<Workout> {
 	public Workout deserialize(JsonParser parser, DeserializationContext context)	throws IOException, JsonProcessingException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Workout workout = new Workout();
+        ObjectMapper mapper = new ObjectMapper();
         Date date = null;
         JsonNode node = parser.getCodec().readTree(parser);
         int workoutId = node.get("id").asInt();
@@ -64,12 +64,21 @@ public class JacksonCustomWorkoutDeserializer extends StdDeserializer<Workout> {
 			throw new IOException(e);
 		}
 
-		if (!(workoutId == 0)) {
+		if (!(workoutId == -1)) {
 			workout.setId(workoutId);
         }
         workout.setWorkoutName(workoutName);
         workout.setWorkoutCategory(workoutCategory);
         workout.setDate(date);
+
+        if (node.has("exercises")) {
+            JsonNode exercises_node = node.get("exercises");
+            Exercise[] exercises = mapper.treeToValue(exercises_node, Exercise[].class);
+            for (Exercise exercise : exercises){
+                workout.addExercise(exercise);
+            }
+        }
+
 		return workout;
 	}
 

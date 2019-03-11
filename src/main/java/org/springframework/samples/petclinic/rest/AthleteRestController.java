@@ -62,9 +62,18 @@ public class AthleteRestController {
 		return new ResponseEntity<Collection<Athlete>>(athlete, HttpStatus.OK);
     }
 
+    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+	@RequestMapping(value = "/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Athlete> getAthleteByUsername(@PathVariable("athleteId") int athleteId){
+		Athlete athlete = this.clinicService.findAthleteById(athleteId);
+		if(athlete == null){
+			return new ResponseEntity<Athlete>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Athlete>(athlete, HttpStatus.OK);
+	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
-	@RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/login/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> getAthleteByUsername(@PathVariable("username") String username){
 		Athlete athlete = this.clinicService.findAthleteByUsername(username);
 		if(athlete == null){
@@ -86,11 +95,34 @@ public class AthleteRestController {
 		this.clinicService.saveAthlete(athlete);
 		headers.setLocation(ucBuilder.path("/api/athletes/{id}").buildAndExpand(athlete.getId()).toUri());
 		return new ResponseEntity<Athlete>(athlete, headers, HttpStatus.CREATED);
+    }
+
+    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Athlete> athleteLogin(@RequestBody @Valid Athlete athlete, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
+		BindingErrorsResponse errors = new BindingErrorsResponse();
+		HttpHeaders headers = new HttpHeaders();
+		if(bindingResult.hasErrors() || (athlete == null)){
+			errors.addAllErrors(bindingResult);
+			headers.add("errors", errors.toJSON());
+			return new ResponseEntity<Athlete>(headers, HttpStatus.BAD_REQUEST);
+        }
+
+        if (this.clinicService.athleteExistsByUsername(athlete.getUsername())){
+            Athlete currentAthlete = this.clinicService.findAthleteByUsername(athlete.getUsername());
+            if(currentAthlete.getPassword().equals(athlete.getPassword())){
+                return new ResponseEntity<Athlete>(currentAthlete, headers, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<Athlete>(athlete, HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<Athlete>(athlete, HttpStatus.BAD_REQUEST);
+        }
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{athleteId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Athlete> updateAthlete(@PathVariable("athleteId") String username, @RequestBody @Valid Athlete athlete, BindingResult bindingResult){
+	public ResponseEntity<Athlete> updateAthlete(@PathVariable("athleteId") int athleteId, @RequestBody @Valid Athlete athlete, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
 		HttpHeaders headers = new HttpHeaders();
 		if(bindingResult.hasErrors() || (athlete == null)){
@@ -98,10 +130,15 @@ public class AthleteRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Athlete>(headers, HttpStatus.BAD_REQUEST);
 		}
-		Athlete currentAthlete = this.clinicService.findAthleteByUsername(username);
+		Athlete currentAthlete = this.clinicService.findAthleteById(athleteId);
 		if(currentAthlete == null){
 			return new ResponseEntity<Athlete>(HttpStatus.NOT_FOUND);
-		}
+        }
+
+        currentAthlete.setUsername(athlete.getUsername());
+        currentAthlete.setPassword(athlete.getPassword());
+        currentAthlete.setEmail(athlete.getEmail());
+
 		this.clinicService.saveAthlete(currentAthlete);
 		return new ResponseEntity<Athlete>(currentAthlete, HttpStatus.NO_CONTENT);
 	}
@@ -109,8 +146,8 @@ public class AthleteRestController {
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{athleteId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
-	public ResponseEntity<Void> deleteAthlete(@PathVariable("athleteId") String username){
-		Athlete athlete = this.clinicService.findAthleteByUsername(username);
+	public ResponseEntity<Void> deleteAthlete(@PathVariable("athleteId") int athleteId){
+		Athlete athlete = this.clinicService.findAthleteById(athleteId);
 		if(athlete == null){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}

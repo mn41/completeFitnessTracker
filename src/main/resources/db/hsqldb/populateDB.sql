@@ -61,6 +61,7 @@ INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_ADMIN');
 INSERT INTO athletes (username, password, email) VALUES ('abc', '123', 'a@b.com')
 INSERT INTO athletes (username, password, email) VALUES ('abcd', '1234', 'ad@bc.com')
 INSERT INTO athletes (username, password, email) VALUES ('abcd3', '12345', 'ead@bc.com')
+INSERT INTO athletes (username, password, email) VALUES ('deleteuser', 'deletepass', 'ead@bc.com')
 
 INSERT INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'breakfast', '2013-01-01', 170, 10, 10, 10);
 INSERT INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'lunch', '2013-01-01', 170, 10, 10, 10);
@@ -84,3 +85,5 @@ INSERT INTO exercises (workout_id, exercise_name, weight, reps, elapsed_time, se
 INSERT INTO weight_measurements (athlete_id, weight, date) VALUES (1,123,'2013-01-01')
 INSERT INTO weight_measurements (athlete_id, weight, date) VALUES (1,123,'2013-01-02')
 INSERT INTO weight_measurements (athlete_id, weight, date) VALUES (1,123,'2013-01-03')
+INSERT INTO weight_measurements (athlete_id, weight, date) VALUES (3,123,'2013-01-03')
+

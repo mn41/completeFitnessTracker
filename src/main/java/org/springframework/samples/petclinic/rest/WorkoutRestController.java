@@ -117,7 +117,12 @@ public class WorkoutRestController {
 		Workout currentWorkout = this.clinicService.findWorkoutById(workoutId);
 		if(currentWorkout == null){
 			return new ResponseEntity<Workout>(HttpStatus.NOT_FOUND);
-		}
+        }
+
+        currentWorkout.setWorkoutName(workout.getWorkoutName());
+        currentWorkout.setWorkoutCategory(workout.getWorkoutCategory());
+        currentWorkout.setDate(workout.getDate());
+
 		this.clinicService.saveWorkout(currentWorkout);
 		return new ResponseEntity<Workout>(currentWorkout, HttpStatus.NO_CONTENT);
 	}

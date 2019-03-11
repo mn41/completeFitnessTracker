@@ -39,7 +39,11 @@ public interface AthleteRepository {
      */
     Collection<Athlete> findAll() throws DataAccessException;
 
-	Athlete findByUsername(String Username) throws DataAccessException;
+    Athlete findById(int id) throws DataAccessException;
+
+    Athlete findByUsername(String username) throws DataAccessException;
+
+    boolean existsByUsername (String username) throws DataAccessException;
 
 	void save(Athlete athlete) throws DataAccessException;
 

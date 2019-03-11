@@ -49,8 +49,6 @@ public class JacksonCustomFoodDeserializer extends StdDeserializer<Food> {
 	@Override
 	public Food deserialize(JsonParser parser, DeserializationContext context)	throws IOException, JsonProcessingException {
         Food food = new Food();
-        Meal meal = new Meal();
-		ObjectMapper mapper = new ObjectMapper();
         JsonNode node = parser.getCodec().readTree(parser);
 
         int foodId = node.get("id").asInt();

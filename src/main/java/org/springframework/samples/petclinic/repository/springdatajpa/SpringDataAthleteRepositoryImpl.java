@@ -34,14 +34,5 @@ import org.springframework.samples.petclinic.model.Athlete;
 @Profile("spring-data-jpa")
 public class SpringDataAthleteRepositoryImpl implements AthleteRepositoryOverride {
 
-	@PersistenceContext
-    private EntityManager em;
-
-	@Override
-	public void delete(Athlete athlete) {
-		String athleteId = athlete.getId().toString();
-		//this.em.createNativeQuery("DELETE FROM food WHERE food_id=" + foodId).executeUpdate();
-		this.em.createQuery("DELETE FROM Food food WHERE id=" + athleteId).executeUpdate();
-	}
 
 }

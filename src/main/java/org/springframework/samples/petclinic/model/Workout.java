@@ -12,7 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -78,14 +77,6 @@ public class Workout extends BaseEntity{
         this.athlete = athlete;
     }
 
-    public Set<Exercise> getExercises() {
-        return this.exercises;
-    }
-
-    public void setExercises(Set<Exercise> exercises) {
-        this.exercises = exercises;
-    }
-
     public String getWorkoutName() {
         return this.workoutName;
     }
@@ -141,6 +132,32 @@ public class Workout extends BaseEntity{
     public Workout athlete(Athlete athlete) {
         this.athlete = athlete;
         return this;
+    }
+
+    public List<Exercise> getExercises() {
+        List<Exercise> sortedExercises = new ArrayList<Exercise>(getExercisesInternal());
+        return sortedExercises;
+    }
+
+    public void setExercises(Set<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    @JsonIgnore
+    protected Set<Exercise> getExercisesInternal() {
+        if (this.exercises == null) {
+            this.exercises = new HashSet<>();
+        }
+        return this.exercises;
+    }
+
+    protected void setExercisesInternal(Set<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public void addExercise(Exercise exercise) {
+        getExercisesInternal().add(exercise);
+        exercise.setWorkout(this);
     }
 
     @Override

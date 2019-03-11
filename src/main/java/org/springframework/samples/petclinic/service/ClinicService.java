@@ -74,7 +74,9 @@ public interface ClinicService {
 	void saveSpecialty(Specialty specialty) throws DataAccessException;
     void deleteSpecialty(Specialty specialty) throws DataAccessException;
 
+    Athlete findAthleteById(int id);
     Athlete findAthleteByUsername(String username);
+    boolean athleteExistsByUsername(String username);
 	Collection<Athlete> findAllAthletes() throws DataAccessException;
 	void saveAthlete(Athlete athlete) throws DataAccessException;
     void deleteAthlete(Athlete athlete) throws DataAccessException;

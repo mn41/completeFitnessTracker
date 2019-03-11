@@ -390,6 +390,19 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
 	@Transactional(readOnly = true)
+	public Athlete findAthleteById(int id) {
+		Athlete athlete = null;
+		try {
+			athlete = athleteRepository.findById(id);
+		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+		// just ignore not found exceptions for Jdbc/Jpa realization
+			return null;
+		}
+		return athlete;
+	}
+
+    @Override
+	@Transactional(readOnly = true)
 	public Athlete findAthleteByUsername(String username) {
 		Athlete athlete = null;
 		try {
@@ -399,6 +412,12 @@ public class ClinicServiceImpl implements ClinicService {
 			return null;
 		}
 		return athlete;
+    }
+
+    @Override
+	@Transactional(readOnly = true)
+	public boolean athleteExistsByUsername(String username) {
+		return athleteRepository.existsByUsername(username);
 	}
 
     @Override

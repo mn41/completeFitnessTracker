@@ -51,7 +51,6 @@ public class JacksonCustomAthleteSerializer extends StdSerializer<Athlete> {
         if (athlete == null) {
             throw new IOException("Cannot serialize Food object - food or food.athlete is null");
         }
-        Format formatter = new SimpleDateFormat("yyyy/MM/dd");
 
         jgen.writeStartObject();
         if (athlete.getId() == null) {

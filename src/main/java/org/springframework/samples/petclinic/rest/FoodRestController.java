@@ -115,7 +115,15 @@ public class FoodRestController {
 		Food currentFood = this.clinicService.findFoodById(foodId);
 		if(currentFood == null){
 			return new ResponseEntity<Food>(HttpStatus.NOT_FOUND);
-		}
+        }
+
+        currentFood.setFoodName(food.getFoodName());
+        currentFood.setCalories(food.getCalories());
+        currentFood.setFat(food.getFat());
+        currentFood.setCarbohydrates(food.getCarbohydrates());
+        currentFood.setProtein(food.getProtein());
+        currentFood.setServings(food.getServings());
+
 		this.clinicService.saveFood(currentFood);
 		return new ResponseEntity<Food>(currentFood, HttpStatus.NO_CONTENT);
 	}

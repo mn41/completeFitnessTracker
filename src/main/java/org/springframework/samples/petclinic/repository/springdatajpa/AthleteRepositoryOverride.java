@@ -27,6 +27,5 @@ import org.springframework.samples.petclinic.model.Athlete;
 @Profile("spring-data-jpa")
 public interface AthleteRepositoryOverride {
 
-	public void delete(Athlete athlete);
 
 }

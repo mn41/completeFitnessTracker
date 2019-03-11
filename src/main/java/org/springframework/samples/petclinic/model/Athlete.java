@@ -27,11 +27,13 @@ public class Athlete extends BaseEntity{
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "athlete", fetch = FetchType.LAZY)
-    private Set<Meal> meals;
+    private Set<Meal> meals = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "athlete", fetch = FetchType.LAZY)
-    private Set<WeightMeasurement> weightMeasurements;
+    private Set<WeightMeasurement> weightMeasurements = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "athlete", fetch = FetchType.LAZY)
+    private Set<Workout> workouts = new HashSet<>();
 
     public String getUsername() {
         return this.username;
@@ -71,6 +73,14 @@ public class Athlete extends BaseEntity{
 
     public void setWeightMeasurements(Set<WeightMeasurement> weightMeasurements) {
         this.weightMeasurements = weightMeasurements;
+    }
+
+    public Set<Workout> getWorkouts() {
+        return this.workouts;
+    }
+
+    public void setWorkouts(Set<Workout> workouts) {
+        this.workouts = workouts;
     }
 
     @Override

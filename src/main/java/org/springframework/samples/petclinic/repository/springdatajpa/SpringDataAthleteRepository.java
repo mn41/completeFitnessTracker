@@ -32,6 +32,5 @@ import org.springframework.samples.petclinic.repository.AthleteRepository;
 @Profile("spring-data-jpa")
 public interface SpringDataAthleteRepository extends AthleteRepository, Repository<Athlete, Integer>, AthleteRepositoryOverride {
 
-    public void delete(Athlete athlete);
 
 }

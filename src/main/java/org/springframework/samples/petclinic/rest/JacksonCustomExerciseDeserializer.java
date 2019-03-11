@@ -49,6 +49,7 @@ public class JacksonCustomExerciseDeserializer extends StdDeserializer<Exercise>
 	public Exercise deserialize(JsonParser parser, DeserializationContext context)	throws IOException, JsonProcessingException {
         Exercise exercise = new Exercise();
         JsonNode node = parser.getCodec().readTree(parser);
+
         int exerciseId = node.get("id").asInt();
         String exerciseName = node.get("exerciseName").asText(null);
         double weight = node.get("weight").asDouble();
@@ -56,7 +57,7 @@ public class JacksonCustomExerciseDeserializer extends StdDeserializer<Exercise>
         double elapsedTime = node.get("elapsedTime").asDouble();
         int sequenceNumber = node.get("sequenceNumber").asInt();
 
-		if (!(exerciseId == 0)) {
+		if (!(exerciseId == -1)) {
 			exercise.setId(exerciseId);
         }
         exercise.setExerciseName(exerciseName);
