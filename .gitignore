@@ -3,6 +3,8 @@ target/*
 .classpath
 .project
 .idea
+.vscode
+.attach*
 *.iml
 /target
 
