@@ -24,7 +24,6 @@ import java.util.Date;
 import org.springframework.samples.petclinic.model.Athlete;
 import org.springframework.samples.petclinic.model.Food;
 import org.springframework.samples.petclinic.model.Meal;
-import org.springframework.samples.petclinic.model.Visit;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
