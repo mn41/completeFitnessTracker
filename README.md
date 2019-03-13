@@ -5,7 +5,7 @@
 
 Start with:
 
-Open Visual Studio Code and press the run button for now.
+**Open Visual Studio Code and press the run button for now.**
 
 `./mvnw spring-boot:run` is currently causing an error
 
