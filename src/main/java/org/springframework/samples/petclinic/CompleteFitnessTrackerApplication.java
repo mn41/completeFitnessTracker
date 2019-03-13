@@ -6,14 +6,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class PetClinicApplication extends SpringBootServletInitializer {
-	
+public class CompleteFitnessTrackerApplication extends SpringBootServletInitializer {
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(PetClinicApplication.class);
+		return application.sources(CompleteFitnessTrackerApplication.class);
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(PetClinicApplication.class, args);
+		SpringApplication.run(CompleteFitnessTrackerApplication.class, args);
 	}
 }
