@@ -28,7 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Food;
 import org.springframework.samples.petclinic.model.Meal;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.service.TrackerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,13 +50,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class FoodRestController {
 
     @Autowired
-	private ClinicService clinicService;
+	private TrackerService trackerService;
 
 	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Food>> getAllFoods(){
 		Collection<Food> food = new ArrayList<Food>();
-		food.addAll(this.clinicService.findAllFoods());
+		food.addAll(this.trackerService.findAllFoods());
 		if (food.isEmpty()){
 			return new ResponseEntity<Collection<Food>>(HttpStatus.NOT_FOUND);
 		}
@@ -67,7 +67,7 @@ public class FoodRestController {
 	@RequestMapping(value = "/search/meal/{mealId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Food>> getFoodsByMealId(@PathVariable("mealId") int mealId){
 		Collection<Food> food = new ArrayList<Food>();
-		food.addAll(this.clinicService.findFoodsByMealId(mealId));
+		food.addAll(this.trackerService.findFoodsByMealId(mealId));
 		if (food.isEmpty()){
 			return new ResponseEntity<Collection<Food>>(HttpStatus.NOT_FOUND);
 		}
@@ -77,7 +77,7 @@ public class FoodRestController {
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{foodId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Food> getFood(@PathVariable("foodId") int foodId){
-		Food food = this.clinicService.findFoodById(foodId);
+		Food food = this.trackerService.findFoodById(foodId);
 		if(food == null){
 			return new ResponseEntity<Food>(HttpStatus.NOT_FOUND);
 		}
@@ -94,9 +94,9 @@ public class FoodRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Food>(headers, HttpStatus.BAD_REQUEST);
         }
-        Meal meal = this.clinicService.findMealById(mealId);
+        Meal meal = this.trackerService.findMealById(mealId);
         food.setMeal(meal);
-        this.clinicService.saveFood(food);
+        this.trackerService.saveFood(food);
         meal.updateTotals();
 		headers.setLocation(ucBuilder.path("/api/foods/{id}").buildAndExpand(food.getId()).toUri());
 		return new ResponseEntity<Food>(food, headers, HttpStatus.CREATED);
@@ -112,7 +112,7 @@ public class FoodRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Food>(headers, HttpStatus.BAD_REQUEST);
 		}
-		Food currentFood = this.clinicService.findFoodById(foodId);
+		Food currentFood = this.trackerService.findFoodById(foodId);
 		if(currentFood == null){
 			return new ResponseEntity<Food>(HttpStatus.NOT_FOUND);
         }
@@ -124,7 +124,7 @@ public class FoodRestController {
         currentFood.setProtein(food.getProtein());
         currentFood.setServings(food.getServings());
 
-		this.clinicService.saveFood(currentFood);
+		this.trackerService.saveFood(currentFood);
 		return new ResponseEntity<Food>(currentFood, HttpStatus.NO_CONTENT);
 	}
 
@@ -132,11 +132,11 @@ public class FoodRestController {
 	@RequestMapping(value = "/{foodId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteFood(@PathVariable("foodId") int foodId){
-		Food food = this.clinicService.findFoodById(foodId);
+		Food food = this.trackerService.findFoodById(foodId);
 		if(food == null){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
-		this.clinicService.deleteFood(food);
+		this.trackerService.deleteFood(food);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 

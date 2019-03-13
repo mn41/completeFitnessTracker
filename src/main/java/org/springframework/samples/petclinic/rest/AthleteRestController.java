@@ -27,7 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Athlete;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.service.TrackerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,13 +49,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class AthleteRestController {
 
     @Autowired
-	private ClinicService clinicService;
+	private TrackerService trackerService;
 
 	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Athlete>> getAllAthletes(){
 		Collection<Athlete> athlete = new ArrayList<Athlete>();
-		athlete.addAll(this.clinicService.findAllAthletes());
+		athlete.addAll(this.trackerService.findAllAthletes());
 		if (athlete.isEmpty()){
 			return new ResponseEntity<Collection<Athlete>>(HttpStatus.NOT_FOUND);
 		}
@@ -65,7 +65,7 @@ public class AthleteRestController {
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> getAthleteByUsername(@PathVariable("athleteId") int athleteId){
-		Athlete athlete = this.clinicService.findAthleteById(athleteId);
+		Athlete athlete = this.trackerService.findAthleteById(athleteId);
 		if(athlete == null){
 			return new ResponseEntity<Athlete>(HttpStatus.NOT_FOUND);
 		}
@@ -75,7 +75,7 @@ public class AthleteRestController {
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/login/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> getAthleteByUsername(@PathVariable("username") String username){
-		Athlete athlete = this.clinicService.findAthleteByUsername(username);
+		Athlete athlete = this.trackerService.findAthleteByUsername(username);
 		if(athlete == null){
 			return new ResponseEntity<Athlete>(HttpStatus.NOT_FOUND);
 		}
@@ -92,7 +92,7 @@ public class AthleteRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Athlete>(headers, HttpStatus.BAD_REQUEST);
 		}
-		this.clinicService.saveAthlete(athlete);
+		this.trackerService.saveAthlete(athlete);
 		headers.setLocation(ucBuilder.path("/api/athletes/{id}").buildAndExpand(athlete.getId()).toUri());
 		return new ResponseEntity<Athlete>(athlete, headers, HttpStatus.CREATED);
     }
@@ -109,8 +109,8 @@ public class AthleteRestController {
         }
 
 
-        if (this.clinicService.athleteExistsByUsername(athlete.getUsername())){
-            Athlete currentAthlete = this.clinicService.findAthleteByUsername(athlete.getUsername());
+        if (this.trackerService.athleteExistsByUsername(athlete.getUsername())){
+            Athlete currentAthlete = this.trackerService.findAthleteByUsername(athlete.getUsername());
             if(currentAthlete.getPassword().equals(athlete.getPassword())){
                 return new ResponseEntity<Athlete>(currentAthlete, headers, HttpStatus.CREATED);
             } else {
@@ -131,7 +131,7 @@ public class AthleteRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Athlete>(headers, HttpStatus.BAD_REQUEST);
 		}
-		Athlete currentAthlete = this.clinicService.findAthleteById(athleteId);
+		Athlete currentAthlete = this.trackerService.findAthleteById(athleteId);
 		if(currentAthlete == null){
 			return new ResponseEntity<Athlete>(HttpStatus.NOT_FOUND);
         }
@@ -140,7 +140,7 @@ public class AthleteRestController {
         currentAthlete.setPassword(athlete.getPassword());
         currentAthlete.setEmail(athlete.getEmail());
 
-		this.clinicService.saveAthlete(currentAthlete);
+		this.trackerService.saveAthlete(currentAthlete);
 		return new ResponseEntity<Athlete>(currentAthlete, HttpStatus.NO_CONTENT);
 	}
 
@@ -148,11 +148,11 @@ public class AthleteRestController {
 	@RequestMapping(value = "/{athleteId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteAthlete(@PathVariable("athleteId") int athleteId){
-		Athlete athlete = this.clinicService.findAthleteById(athleteId);
+		Athlete athlete = this.trackerService.findAthleteById(athleteId);
 		if(athlete == null){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
-		this.clinicService.deleteAthlete(athlete);
+		this.trackerService.deleteAthlete(athlete);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 

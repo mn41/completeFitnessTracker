@@ -34,7 +34,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Athlete;
 import org.springframework.samples.petclinic.model.WeightMeasurement;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.service.TrackerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,13 +57,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class WeightMeasurementRestController {
 
     @Autowired
-    private ClinicService clinicService;
+    private TrackerService trackerService;
 
     @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<WeightMeasurement>> getAllWeightMeasurements() {
         Collection<WeightMeasurement> weightMeasurements = new ArrayList<WeightMeasurement>();
-        weightMeasurements.addAll(this.clinicService.findAllWeightMeasurements());
+        weightMeasurements.addAll(this.trackerService.findAllWeightMeasurements());
         if (weightMeasurements.isEmpty()) {
             return new ResponseEntity<Collection<WeightMeasurement>>(HttpStatus.NOT_FOUND);
         }
@@ -74,7 +74,7 @@ public class WeightMeasurementRestController {
     @RequestMapping(value = "/{weightMeasurementId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<WeightMeasurement> getWeightMeasurement(
             @PathVariable("weightMeasurementId") int weightMeasurementId) {
-        WeightMeasurement weightMeasurement = this.clinicService.findWeightMeasurementById(weightMeasurementId);
+        WeightMeasurement weightMeasurement = this.trackerService.findWeightMeasurementById(weightMeasurementId);
         if (weightMeasurement == null) {
             return new ResponseEntity<WeightMeasurement>(HttpStatus.NOT_FOUND);
         }
@@ -97,7 +97,7 @@ public class WeightMeasurementRestController {
         }
 
 
-        Collection<WeightMeasurement> weightMeasurement = this.clinicService
+        Collection<WeightMeasurement> weightMeasurement = this.trackerService
                 .findWeightMeasurementsByDateBetweenAndAthleteId(startDate, endDate, athleteId);
         if (weightMeasurement == null) {
             return new ResponseEntity<Collection<WeightMeasurement>>(HttpStatus.NOT_FOUND);
@@ -110,7 +110,7 @@ public class WeightMeasurementRestController {
     public ResponseEntity<Collection<WeightMeasurement>> getWeightMeasurementByAthleteId(
             @PathVariable("athleteId") int athleteId) {
         Collection<WeightMeasurement> weightMeasurement = new ArrayList<WeightMeasurement>();
-        weightMeasurement.addAll(this.clinicService.findWeightMeasurementsByAthleteId(athleteId));
+        weightMeasurement.addAll(this.trackerService.findWeightMeasurementsByAthleteId(athleteId));
         if (weightMeasurement.isEmpty()) {
             return new ResponseEntity<Collection<WeightMeasurement>>(HttpStatus.NOT_FOUND);
         }
@@ -129,9 +129,9 @@ public class WeightMeasurementRestController {
             headers.add("errors", errors.toJSON());
             return new ResponseEntity<WeightMeasurement>(headers, HttpStatus.BAD_REQUEST);
         }
-        Athlete athlete = this.clinicService.findAthleteById(athleteId);
+        Athlete athlete = this.trackerService.findAthleteById(athleteId);
         weightMeasurement.setAthlete(athlete);
-        this.clinicService.saveWeightMeasurement(weightMeasurement);
+        this.trackerService.saveWeightMeasurement(weightMeasurement);
         headers.setLocation(
                 ucBuilder.path("/api/weightMeasurements/{id}").buildAndExpand(weightMeasurement.getId()).toUri());
         return new ResponseEntity<WeightMeasurement>(weightMeasurement, headers, HttpStatus.CREATED);
@@ -149,13 +149,13 @@ public class WeightMeasurementRestController {
             headers.add("errors", errors.toJSON());
             return new ResponseEntity<WeightMeasurement>(headers, HttpStatus.BAD_REQUEST);
         }
-        WeightMeasurement currentWeightMeasurement = this.clinicService.findWeightMeasurementById(weightMeasurementId);
+        WeightMeasurement currentWeightMeasurement = this.trackerService.findWeightMeasurementById(weightMeasurementId);
         if (currentWeightMeasurement == null) {
             return new ResponseEntity<WeightMeasurement>(HttpStatus.NOT_FOUND);
         }
         currentWeightMeasurement.setWeight(weightMeasurement.getWeight());
         currentWeightMeasurement.setDate(weightMeasurement.getDate());
-        this.clinicService.saveWeightMeasurement(currentWeightMeasurement);
+        this.trackerService.saveWeightMeasurement(currentWeightMeasurement);
         return new ResponseEntity<WeightMeasurement>(currentWeightMeasurement, HttpStatus.NO_CONTENT);
     }
 
@@ -163,11 +163,11 @@ public class WeightMeasurementRestController {
     @RequestMapping(value = "/{weightMeasurementId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Transactional
     public ResponseEntity<Void> deleteWeightMeasurement(@PathVariable("weightMeasurementId") int weightMeasurementId) {
-        WeightMeasurement weightMeasurement = this.clinicService.findWeightMeasurementById(weightMeasurementId);
+        WeightMeasurement weightMeasurement = this.trackerService.findWeightMeasurementById(weightMeasurementId);
         if (weightMeasurement == null) {
             return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
-        this.clinicService.deleteWeightMeasurement(weightMeasurement);
+        this.trackerService.deleteWeightMeasurement(weightMeasurement);
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 

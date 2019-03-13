@@ -34,7 +34,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Athlete;
 import org.springframework.samples.petclinic.model.Food;
 import org.springframework.samples.petclinic.model.Meal;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.service.TrackerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,13 +57,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class MealRestController {
 
     @Autowired
-	private ClinicService clinicService;
+	private TrackerService trackerService;
 
 	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Meal>> getAllMeals(){
 		Collection<Meal> meal = new ArrayList<Meal>();
-		meal.addAll(this.clinicService.findAllMeals());
+		meal.addAll(this.trackerService.findAllMeals());
 		if (meal.isEmpty()){
 			return new ResponseEntity<Collection<Meal>>(HttpStatus.NOT_FOUND);
 		}
@@ -73,7 +73,7 @@ public class MealRestController {
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{mealId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Meal> getMeal(@PathVariable("mealId") int mealId){
-		Meal meal = this.clinicService.findMealById(mealId);
+		Meal meal = this.trackerService.findMealById(mealId);
 		if(meal == null){
 			return new ResponseEntity<Meal>(HttpStatus.NOT_FOUND);
 		}
@@ -84,7 +84,7 @@ public class MealRestController {
 	@RequestMapping(value = "/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Meal>> getMealByAthleteId(@PathVariable("athleteId") int athleteId){
 		Collection<Meal> meal = new ArrayList<Meal>();
-		meal.addAll(this.clinicService.findMealsByAthleteId(athleteId));
+		meal.addAll(this.trackerService.findMealsByAthleteId(athleteId));
 		if (meal.isEmpty()){
 			return new ResponseEntity<Collection<Meal>>(HttpStatus.NOT_FOUND);
 		}
@@ -107,7 +107,7 @@ public class MealRestController {
         }
 
 
-        Collection<Meal> meal = this.clinicService
+        Collection<Meal> meal = this.trackerService
                 .findMealsByDateBetweenAndAthleteId(startDate, endDate, athleteId);
         if (meal == null) {
             return new ResponseEntity<Collection<Meal>>(HttpStatus.NOT_FOUND);
@@ -128,9 +128,9 @@ public class MealRestController {
             headers.add("errors", errors.toJSON());
             return new ResponseEntity<Meal>(headers, HttpStatus.BAD_REQUEST);
         }
-        Athlete athlete = this.clinicService.findAthleteById(athleteId);
+        Athlete athlete = this.trackerService.findAthleteById(athleteId);
         meal.setAthlete(athlete);
-        this.clinicService.saveMeal(meal);
+        this.trackerService.saveMeal(meal);
         headers.setLocation(
                 ucBuilder.path("/api/meals/{id}").buildAndExpand(meal.getId()).toUri());
         return new ResponseEntity<Meal>(meal, headers, HttpStatus.CREATED);
@@ -146,7 +146,7 @@ public class MealRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Meal>(headers, HttpStatus.BAD_REQUEST);
 		}
-		Meal currentMeal = this.clinicService.findMealById(mealId);
+		Meal currentMeal = this.trackerService.findMealById(mealId);
 		if(currentMeal == null){
 			return new ResponseEntity<Meal>(HttpStatus.NOT_FOUND);
         }
@@ -158,7 +158,7 @@ public class MealRestController {
         currentMeal.setProtein(meal.getProtein());
         currentMeal.setDate(meal.getDate());
 
-		this.clinicService.saveMeal(currentMeal);
+		this.trackerService.saveMeal(currentMeal);
 		return new ResponseEntity<Meal>(currentMeal, HttpStatus.NO_CONTENT);
 	}
 
@@ -166,11 +166,11 @@ public class MealRestController {
 	@RequestMapping(value = "/{mealId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteMeal(@PathVariable("mealId") int mealId){
-		Meal meal = this.clinicService.findMealById(mealId);
+		Meal meal = this.trackerService.findMealById(mealId);
 		if(meal == null){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
-		this.clinicService.deleteMeal(meal);
+		this.trackerService.deleteMeal(meal);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 

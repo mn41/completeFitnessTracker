@@ -32,7 +32,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Athlete;
 import org.springframework.samples.petclinic.model.Workout;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.service.TrackerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -55,13 +55,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class WorkoutRestController {
 
     @Autowired
-	private ClinicService clinicService;
+	private TrackerService trackerService;
 
 	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Workout>> getAllWorkouts(){
 		Collection<Workout> workout = new ArrayList<Workout>();
-		workout.addAll(this.clinicService.findAllWorkouts());
+		workout.addAll(this.trackerService.findAllWorkouts());
 		if (workout.isEmpty()){
 			return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
 		}
@@ -71,7 +71,7 @@ public class WorkoutRestController {
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{workoutId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Workout> getWorkout(@PathVariable("workoutId") int workoutId){
-		Workout workout = this.clinicService.findWorkoutById(workoutId);
+		Workout workout = this.trackerService.findWorkoutById(workoutId);
 		if(workout == null){
 			return new ResponseEntity<Workout>(HttpStatus.NOT_FOUND);
 		}
@@ -82,7 +82,7 @@ public class WorkoutRestController {
 	@RequestMapping(value = "/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Workout>> getWorkoutByAthleteId(@PathVariable("athleteId") int athleteId){
 		Collection<Workout> workout = new ArrayList<Workout>();
-		workout.addAll(this.clinicService.findWorkoutsByAthleteId(athleteId));
+		workout.addAll(this.trackerService.findWorkoutsByAthleteId(athleteId));
 		if (workout.isEmpty()){
 			return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
 		}
@@ -105,7 +105,7 @@ public class WorkoutRestController {
         }
 
 
-        Collection<Workout> workout = this.clinicService
+        Collection<Workout> workout = this.trackerService
                 .findWorkoutsByDateBetweenAndAthleteId(startDate, endDate, athleteId);
         if (workout == null) {
             return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
@@ -126,9 +126,9 @@ public class WorkoutRestController {
             headers.add("errors", errors.toJSON());
             return new ResponseEntity<Workout>(headers, HttpStatus.BAD_REQUEST);
         }
-        Athlete athlete = this.clinicService.findAthleteById(athleteId);
+        Athlete athlete = this.trackerService.findAthleteById(athleteId);
         workout.setAthlete(athlete);
-        this.clinicService.saveWorkout(workout);
+        this.trackerService.saveWorkout(workout);
         headers.setLocation(
                 ucBuilder.path("/api/workouts/{id}").buildAndExpand(workout.getId()).toUri());
         return new ResponseEntity<Workout>(workout, headers, HttpStatus.CREATED);
@@ -144,7 +144,7 @@ public class WorkoutRestController {
 			headers.add("errors", errors.toJSON());
 			return new ResponseEntity<Workout>(headers, HttpStatus.BAD_REQUEST);
 		}
-		Workout currentWorkout = this.clinicService.findWorkoutById(workoutId);
+		Workout currentWorkout = this.trackerService.findWorkoutById(workoutId);
 		if(currentWorkout == null){
 			return new ResponseEntity<Workout>(HttpStatus.NOT_FOUND);
         }
@@ -153,7 +153,7 @@ public class WorkoutRestController {
         currentWorkout.setCategory(workout.getCategory());
         currentWorkout.setDate(workout.getDate());
 
-		this.clinicService.saveWorkout(currentWorkout);
+		this.trackerService.saveWorkout(currentWorkout);
 		return new ResponseEntity<Workout>(currentWorkout, HttpStatus.NO_CONTENT);
 	}
 
@@ -161,11 +161,11 @@ public class WorkoutRestController {
 	@RequestMapping(value = "/{workoutId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteWorkout(@PathVariable("workoutId") int workoutId){
-		Workout workout = this.clinicService.findWorkoutById(workoutId);
+		Workout workout = this.trackerService.findWorkoutById(workoutId);
 		if(workout == null){
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
-		this.clinicService.deleteWorkout(workout);
+		this.trackerService.deleteWorkout(workout);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
