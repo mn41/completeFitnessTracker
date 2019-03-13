@@ -14,3 +14,5 @@ Start with:
 Access Endpoints at:
 
 `http://localhost:9966/petclinic/swagger-ui.html#/`
+
+or through a REST Client like POSTMAN
