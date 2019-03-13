@@ -46,7 +46,7 @@ public interface MealRepository {
 
 	Meal findById(int id) throws DataAccessException;
 
-	void save(Meal meal) throws DataAccessException;
+	Meal save(Meal meal) throws DataAccessException;
 
 	void delete(Meal meal) throws DataAccessException;
 

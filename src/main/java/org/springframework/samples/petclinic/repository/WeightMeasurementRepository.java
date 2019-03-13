@@ -37,7 +37,7 @@ public interface WeightMeasurementRepository {
 
     Collection<WeightMeasurement> findByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException;
 
-	void save(WeightMeasurement weightMeasurement) throws DataAccessException;
+	WeightMeasurement save(WeightMeasurement weightMeasurement) throws DataAccessException;
 
 	void delete(WeightMeasurement weightMeasurement) throws DataAccessException;
 

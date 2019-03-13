@@ -46,7 +46,7 @@ public interface WorkoutRepository {
 
 	Workout findById(int id) throws DataAccessException;
 
-	void save(Workout workout) throws DataAccessException;
+	Workout save(Workout workout) throws DataAccessException;
 
 	void delete(Workout workout) throws DataAccessException;
 

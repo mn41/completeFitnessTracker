@@ -48,7 +48,7 @@ public interface ExerciseRepository {
 
 	Exercise findById(int id) throws DataAccessException;
 
-	void save(Exercise exercise) throws DataAccessException;
+	Exercise save(Exercise exercise) throws DataAccessException;
 
 	void delete(Exercise exercise) throws DataAccessException;
 

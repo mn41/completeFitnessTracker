@@ -43,7 +43,7 @@ public interface FoodRepository {
 
 	Food findById(int id) throws DataAccessException;
 
-	void save(Food food) throws DataAccessException;
+	Food save(Food food) throws DataAccessException;
 
 	void delete(Food food) throws DataAccessException;
 
