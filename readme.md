@@ -1,37 +1,37 @@
-# REST version of Spring PetClinic Sample Application (spring-framework-petclinic extend ) [![Build Status](https://travis-ci.org/spring-petclinic/spring-petclinic-rest.png?branch=master)](https://travis-ci.org/spring-petclinic/spring-petclinic-rest/)
+# REST version of Spring CompleteFitnessTracker Sample Application (spring-framework-completefitnesstracker extend ) [![Build Status](https://travis-ci.org/spring-completefitnesstracker/spring-completefitnesstracker-rest.png?branch=master)](https://travis-ci.org/spring-completefitnesstracker/spring-completefitnesstracker-rest/)
 
-This backend version of the Spring Petclinic application only provides a REST API. **There is no UI**.
-The [spring-petclinic-angular project](https://github.com/spring-petclinic/spring-petclinic-angular) is a Angular 5 front-end application witch consumes the REST API.
+This backend version of the Spring Completefitnesstracker application only provides a REST API. **There is no UI**.
+The [spring-completefitnesstracker-angular project](https://github.com/spring-completefitnesstracker/spring-completefitnesstracker-angular) is a Angular 5 front-end application witch consumes the REST API.
 
-## Understanding the Spring Petclinic application with a few diagrams
-<a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
+## Understanding the Spring Completefitnesstracker application with a few diagrams
+<a href="https://speakerdeck.com/michaelisvy/spring-completefitnesstracker-sample-application">See the presentation here</a>
 
-## Running petclinic locally
+## Running completefitnesstracker locally
 ```
-	git clone https://github.com/spring-petclinic/spring-petclinic-rest.git
-	cd spring-petclinic-rest
+	git clone https://github.com/spring-completefitnesstracker/spring-completefitnesstracker-rest.git
+	cd spring-completefitnesstracker-rest
 	./mvnw spring-boot:run
 ```
 
-You can then access petclinic here: http://localhost:9966/petclinic/
+You can then access completefitnesstracker here: http://localhost:9966/completefitnesstracker/
 
 ## Swagger REST API documentation presented here (after application start):
-<a href="http://localhost:9966/petclinic/swagger-ui.html">http://localhost:9966/petclinic/swagger-ui.html</a>
+<a href="http://localhost:9966/completefitnesstracker/swagger-ui.html">http://localhost:9966/completefitnesstracker/swagger-ui.html</a>
 
 ## Screenshot of the Angular 5 client
 
-<img width="1427" alt="spring-petclinic-angular2" src="https://cloud.githubusercontent.com/assets/838318/23263243/f4509c4a-f9dd-11e6-951b-69d0ef72d8bd.png">
+<img width="1427" alt="spring-completefitnesstracker-angular2" src="https://cloud.githubusercontent.com/assets/838318/23263243/f4509c4a-f9dd-11e6-951b-69d0ef72d8bd.png">
 
-## In case you find a bug/suggested improvement for Spring Petclinic
-Our issue tracker is available here: https://github.com/spring-petclinic/spring-petclinic-rest/issues
+## In case you find a bug/suggested improvement for Spring Completefitnesstracker
+Our issue tracker is available here: https://github.com/spring-completefitnesstracker/spring-completefitnesstracker-rest/issues
 
 
 ## Database configuration
 
-In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
+In its default configuration, Completefitnesstracker uses an in-memory database (HSQLDB) which
 gets populated at startup with data.
 A similar setups is provided for MySql and PostgreSQL in case a persistent database configuration is needed.
-To run petclinic locally using persistent database, it is needed to change profile defined in application.properties file.
+To run completefitnesstracker locally using persistent database, it is needed to change profile defined in application.properties file.
 
 For MySQL database, it is needed to change param "hsqldb" to "mysql" in string
 ```
@@ -42,9 +42,9 @@ spring.profiles.active=hsqldb,spring-data-jpa
 Before do this, would be good to check properties defined in application-mysql.properties file.
 
 ```
-spring.datasource.url = jdbc:mysql://localhost:3306/petclinic?useUnicode=true
+spring.datasource.url = jdbc:mysql://localhost:3306/completefitnesstracker?useUnicode=true
 spring.datasource.username=pc
-spring.datasource.password=petclinic 
+spring.datasource.password=completefitnesstracker 
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver 
 spring.jpa.database=MYSQL
 spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
@@ -54,7 +54,7 @@ spring.jpa.hibernate.ddl-auto=none
 You may also start a MySql database with docker:
 
 ```
-docker run --name mysql-petclinic -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+docker run --name mysql-completefitnesstracker -e MYSQL_ROOT_PASSWORD=completefitnesstracker -e MYSQL_DATABASE=completefitnesstracker -p 3306:3306 mysql:5.7.8
 ```
 
 For PostgeSQL database, it is needed to change param "hsqldb" to "postgresql" in string
@@ -66,9 +66,9 @@ spring.profiles.active=hsqldb,spring-data-jpa
 Before do this, would be good to check properties defined in application-postgresql.properties file.
 
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/petclinic
+spring.datasource.url=jdbc:postgresql://localhost:5432/completefitnesstracker
 spring.datasource.username=postgres
-spring.datasource.password=petclinic
+spring.datasource.password=completefitnesstracker
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.database=POSTGRESQL
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
@@ -77,11 +77,11 @@ spring.jpa.hibernate.ddl-auto=none
 You may also start a Postgres database with docker:
 
 ```
-docker run --name postgres-petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES_DB=petclinic -p 5432:5432 -d postgres:9.6.0
+docker run --name postgres-completefitnesstracker -e POSTGRES_PASSWORD=completefitnesstracker -e POSTGRES_DB=completefitnesstracker -p 5432:5432 -d postgres:9.6.0
 ```
 
 ## Security configuration
-In its default configuration, Petclinic doesn't have authentication and authorization enabled.
+In its default configuration, Completefitnesstracker doesn't have authentication and authorization enabled.
 
 ### Basic Authentication
 In order to use the basic authentication functionality, turn in on from the application.properties file
@@ -109,7 +109,7 @@ POST /api/users
 }
 ```
 
-## Working with Petclinic in Eclipse/STS
+## Working with Completefitnesstracker in Eclipse/STS
 
 ### prerequisites
 The following items should be installed in your system:
@@ -125,7 +125,7 @@ If m2e is not there, just follow the install process here: http://eclipse.org/m2
 
 1) In the command line
 ```
-git clone https://github.com/spring-petclinic/spring-petclinic-rest.git
+git clone https://github.com/spring-completefitnesstracker/spring-completefitnesstracker-rest.git
 ```
 2) Inside Eclipse
 ```
@@ -137,18 +137,18 @@ File -> Import -> Maven -> Existing Maven project
 
 | Layer | Source |
 |--|--|
-| REST API controllers | [REST folder](src/main/java/org/springframework/samples/petclinic/rest) |
-| Service | [TrackerServiceImpl.java](src/main/java/org/springframework/samples/petclinic/service/TrackerServiceImpl.java) |
-|JDBC | [jdbc folder](src/main/java/org/springframework/samples/petclinic/repository/jdb) |
-| JPA | [jpa folder](src/main/java/org/springframework/samples/petclinic/repository/jpa) |
-| Spring Data JPA | [springdatajpa folder](src/main/java/org/springframework/samples/petclinic/repository/springdatajpa) |
-| Tests | [AbstractTrackerServiceTests.java](src/test/java/org/springframework/samples/petclinic/service/AbstractTrackerServiceTests.java) |
+| REST API controllers | [REST folder](src/main/java/org/springframework/samples/completefitnesstracker/rest) |
+| Service | [TrackerServiceImpl.java](src/main/java/org/springframework/samples/completefitnesstracker/service/TrackerServiceImpl.java) |
+|JDBC | [jdbc folder](src/main/java/org/springframework/samples/completefitnesstracker/repository/jdb) |
+| JPA | [jpa folder](src/main/java/org/springframework/samples/completefitnesstracker/repository/jpa) |
+| Spring Data JPA | [springdatajpa folder](src/main/java/org/springframework/samples/completefitnesstracker/repository/springdatajpa) |
+| Tests | [AbstractTrackerServiceTests.java](src/test/java/org/springframework/samples/completefitnesstracker/service/AbstractTrackerServiceTests.java) |
 
 # Contributing
 
-The [issue tracker](https://github.com/spring-petclinic/spring-petclinic-rest/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
+The [issue tracker](https://github.com/spring-completefitnesstracker/spring-completefitnesstracker-rest/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, editor preferences are available in the [editor config](https://github.com/spring-petclinic/spring-petclinic-rest/blob/master/.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
+For pull requests, editor preferences are available in the [editor config](https://github.com/spring-completefitnesstracker/spring-completefitnesstracker-rest/blob/master/.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
 
 
