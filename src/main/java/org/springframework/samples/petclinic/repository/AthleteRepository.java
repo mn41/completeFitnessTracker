@@ -45,7 +45,7 @@ public interface AthleteRepository {
 
     boolean existsByUsername (String username) throws DataAccessException;
 
-	void save(Athlete athlete) throws DataAccessException;
+	Athlete save(Athlete athlete) throws DataAccessException;
 
 	void delete(Athlete athlete) throws DataAccessException;
 
