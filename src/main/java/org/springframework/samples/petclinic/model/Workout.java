@@ -36,7 +36,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class Workout extends BaseEntity{
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workout", fetch = FetchType.EAGER)
-    private Set<Exercise> exercises;
+    private Set<Exercise> exercises = new HashSet<>();
 
     @Column(name = "workout_name")
     private String workoutName;

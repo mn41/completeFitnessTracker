@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class Meal extends BaseEntity{
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "meal", fetch = FetchType.EAGER)
-    private Set<Food> foods;
+    private Set<Food> foods = new HashSet<>();
 
     @Column(name = "meal_name")
     private String mealName;

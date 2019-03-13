@@ -117,7 +117,7 @@ CREATE TABLE foods (
   carbohydrates DECIMAL,
   protein DECIMAL,
 );
-ALTER TABLE foods ADD CONSTRAINT fk_foods_meals FOREIGN KEY (meal_id) REFERENCES meals (id);
+ALTER TABLE foods ADD CONSTRAINT fk_foods_meals FOREIGN KEY (meal_id) REFERENCES meals (id) ON DELETE CASCADE;
 CREATE INDEX foods_meal_id ON foods (meal_id);
 
 CREATE TABLE weight_measurements (
@@ -152,5 +152,5 @@ CREATE TABLE exercises (
   exercise_date DATE,
 );
 
-ALTER TABLE exercises ADD CONSTRAINT fk_exercises_workouts FOREIGN KEY (workout_id) REFERENCES workouts (id);
+ALTER TABLE exercises ADD CONSTRAINT fk_exercises_workouts FOREIGN KEY (workout_id) REFERENCES workouts (id) ON DELETE CASCADE;
 CREATE INDEX exercises_workout_id ON exercises (workout_id);
