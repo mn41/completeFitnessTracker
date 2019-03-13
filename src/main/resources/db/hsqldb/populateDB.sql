@@ -60,12 +60,15 @@ INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_ADMIN');
 
 INSERT INTO athletes (username, password, email) VALUES ('abc', '123', 'a@b.com')
 INSERT INTO athletes (username, password, email) VALUES ('abcd', '1234', 'ad@bc.com')
-INSERT INTO athletes (username, password, email) VALUES ('abcd3', '12345', 'ead@bc.com')
 INSERT INTO athletes (username, password, email) VALUES ('deleteuser', 'deletepass', 'ead@bc.com')
+INSERT INTO athletes (username, password, email) VALUES ('abcd3', '12345', 'ead@bc.com')
+
 
 INSERT INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'breakfast', '2013-01-01', 170, 10, 10, 10);
 INSERT INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'lunch', '2013-01-01', 170, 10, 10, 10);
-INSERT INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (0,'dinner', '2013-01-02', 1700, 100, 100, 100);
+INSERT INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'dinner', '2013-01-02', 1700, 100, 100, 100);
+INSERT INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (2,'dinner', '2013-01-02', 1700, 100, 100, 100);
+
 
 INSERT INTO foods (meal_id, servings, food_name, calories, fat, carbohydrates, protein) VALUES (1, 1, 'test_food', 17, 1, 1, 1);
 INSERT INTO foods (meal_id, servings, food_name, calories, fat, carbohydrates, protein) VALUES (1, 1, 'test_food2', 17, 1, 1, 1);
@@ -74,6 +77,7 @@ INSERT INTO foods (meal_id, servings, food_name, calories, fat, carbohydrates, p
 
 INSERT INTO workouts (athlete_id, workout_name, category, workout_date) VALUES (1, 'SS', 'Weightlifting', '2013-01-01')
 INSERT INTO workouts (athlete_id, workout_name, category, workout_date) VALUES (1, 'SS', 'Weightlifting', '2013-01-02')
+INSERT INTO workouts (athlete_id, workout_name, category, workout_date) VALUES (1, 'SS', 'Weightlifting', '2013-01-04')
 INSERT INTO workouts (athlete_id, workout_name, category, workout_date) VALUES (2, 'SS', 'Weightlifting', '2013-01-01')
 
 INSERT INTO exercises (workout_id, exercise_name, weight, reps, sets, elapsed_time, sequence_number, exercise_date) VALUES (1, 'Squat', 135, 5, 3, 5, 1, '2013-01-02')

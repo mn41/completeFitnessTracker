@@ -88,7 +88,7 @@ CREATE INDEX fk_username_idx ON roles (username);
 
 CREATE TABLE athletes (
   id      INTEGER IDENTITY PRIMARY KEY,
-  username    VARCHAR(20) NOT NULL,
+  username    VARCHAR(20) NOT NULL UNIQUE,
   password    VARCHAR(20) NOT NULL,
   email     VARCHAR(50)
 )

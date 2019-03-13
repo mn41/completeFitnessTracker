@@ -66,7 +66,7 @@ public class FoodRestController {
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/search/meal/{mealId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Collection<Food>> getAllFoodsByMealId(@PathVariable("mealId") int mealId){
+	public ResponseEntity<Collection<Food>> getFoodsByMealId(@PathVariable("mealId") int mealId){
 		Collection<Food> food = new ArrayList<Food>();
 		food.addAll(this.clinicService.findFoodsByMealId(mealId));
 		if (food.isEmpty()){
@@ -86,7 +86,7 @@ public class FoodRestController {
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
-	@RequestMapping(value = "/{mealId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/add/{mealId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Food> addFood(@PathVariable("mealId") int mealId, @RequestBody @Valid Food food, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
 		HttpHeaders headers = new HttpHeaders();

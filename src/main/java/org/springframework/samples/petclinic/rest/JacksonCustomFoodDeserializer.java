@@ -52,22 +52,39 @@ public class JacksonCustomFoodDeserializer extends StdDeserializer<Food> {
         JsonNode node = parser.getCodec().readTree(parser);
 
         int foodId = node.get("id").asInt();
-        String foodName = node.get("foodName").asText(null);
-        double servings = node.get("servings").asDouble();
-        double calories = node.get("calories").asDouble();
-        double fat = node.get("fat").asDouble();
-        double carbohydrates = node.get("carbohydrates").asDouble();
-		double protein = node.get("protein").asDouble();
-
-		if (!(foodId == -1)) {
+        if (!(foodId == -1)) {
 			food.setId(foodId);
         }
+        if(node.has("foodName")){
+        String foodName = node.get("foodName").asText(null);
         food.setFoodName(foodName);
+        }
+
+        if(node.has("servings")){
+        double servings = node.get("servings").asDouble();
         food.setServings(servings);
+        }
+
+        if(node.has("calories")){
+        double calories = node.get("calories").asDouble();
         food.setCalories(calories);
+        }
+
+        if(node.has("fat")){
+        double fat = node.get("fat").asDouble();
         food.setFat(fat);
+        }
+
+        if(node.has("carbohydrates")){
+        double carbohydrates = node.get("carbohydrates").asDouble();
         food.setCarbohydrates(carbohydrates);
+        }
+
+        if(node.has("protein")){
+        double protein = node.get("protein").asDouble();
         food.setProtein(protein);
+        }
+
 		return food;
 	}
 
