@@ -13,6 +13,6 @@ or run through Visual Studio Code
 
 Access Endpoints at:
 
-`http://localhost:9966/petclinic/swagger-ui.html#/`
+`http://localhost:9966/completefitnesstracker/swagger-ui.html#/`
 
 or through a REST Client like POSTMAN

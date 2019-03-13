@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.springframework.samples</groupId>
-	<artifactId>spring-petclinic</artifactId>
+	<artifactId>spring-completefitnesstracker</artifactId>
 	<version>1.5.2</version>
 	<packaging>war</packaging>
 
-	<name>petclinic</name>
-	<description>Spring petclinic project</description>
+	<name>CompleteFitnessTracker</name>
+	<description>CompleteFitnessTracker</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -26,7 +26,7 @@
         <spring-data-jdbc.version>1.2.1.RELEASE</spring-data-jdbc.version>
 		<cobertura.version>2.7</cobertura.version>
 
-        <start-class>org.springframework.samples.petclinic.PetClinicApplication</start-class>
+        <start-class>org.springframework.samples.completefitnesstracker.CompleteFitnessTrackerApplication</start-class>
 
 	</properties>
 
@@ -178,5 +178,5 @@
             </plugin>
         </plugins>
     </reporting>
-    <url>demopetclinic</url>
+    <url>democompletefitnesstracker</url>
 </project>
