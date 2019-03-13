@@ -112,6 +112,8 @@ public interface ClinicService {
     Exercise findExerciseById(int id);
     Collection<Exercise> findAllExercises() throws DataAccessException;
     Collection<Exercise> findExercisesByWorkoutId(int workoutId) throws DataAccessException;
+    Collection<Exercise> findExercisesByDateBetweenAndWorkoutId(Date startDate, Date endDate, int workoutId) throws DataAccessException;
+    Collection<Exercise> findExercisesByDateBetweenAndExerciseNameAndWorkoutId(Date startDate, Date endDate, String exerciseName, int workoutId) throws DataAccessException;
 	void saveExercise(Exercise exercise) throws DataAccessException;
 	void deleteExercise(Exercise exercise) throws DataAccessException;
 }

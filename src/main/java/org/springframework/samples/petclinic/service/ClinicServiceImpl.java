@@ -552,6 +552,18 @@ public class ClinicServiceImpl implements ClinicService {
     @Transactional(readOnly = true)
 	public Collection<Exercise> findExercisesByWorkoutId(int workoutId) throws DataAccessException {
 		return exerciseRepository.findByWorkoutId(workoutId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+	public Collection<Exercise> findExercisesByDateBetweenAndWorkoutId(Date startDate, Date endDate, int workoutId) throws DataAccessException {
+		return exerciseRepository.findByDateBetweenAndWorkoutId(startDate, endDate, workoutId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+	public Collection<Exercise> findExercisesByDateBetweenAndExerciseNameAndWorkoutId(Date startDate, Date endDate, String exerciseName, int workoutId) throws DataAccessException {
+		return exerciseRepository.findByDateBetweenAndExerciseNameAndWorkoutId(startDate, endDate, exerciseName, workoutId);
 	}
 
 	@Override

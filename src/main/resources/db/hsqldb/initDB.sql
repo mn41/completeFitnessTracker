@@ -146,8 +146,10 @@ CREATE TABLE exercises (
   exercise_name VARCHAR(20),
   weight DECIMAL,
   reps DECIMAL,
+  sets DECIMAL,
   elapsed_time DECIMAL,
-  sequence_number INTEGER
+  sequence_number INTEGER,
+  exercise_date DATE,
 );
 
 ALTER TABLE exercises ADD CONSTRAINT fk_exercises_workouts FOREIGN KEY (workout_id) REFERENCES workouts (id);

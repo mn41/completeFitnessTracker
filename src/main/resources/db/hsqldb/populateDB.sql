@@ -76,11 +76,11 @@ INSERT INTO workouts (athlete_id, workout_name, category, workout_date) VALUES (
 INSERT INTO workouts (athlete_id, workout_name, category, workout_date) VALUES (1, 'SS', 'Weightlifting', '2013-01-02')
 INSERT INTO workouts (athlete_id, workout_name, category, workout_date) VALUES (2, 'SS', 'Weightlifting', '2013-01-01')
 
-INSERT INTO exercises (workout_id, exercise_name, weight, reps, elapsed_time, sequence_number) VALUES (1, 'Squat', 135, 5, 5, 1)
-INSERT INTO exercises (workout_id, exercise_name, weight, reps, elapsed_time, sequence_number) VALUES (1, 'Squat', 135, 5, 5, 1)
-INSERT INTO exercises (workout_id, exercise_name, weight, reps, elapsed_time, sequence_number) VALUES (1, 'Squat', 135, 5, 5, 1)
-INSERT INTO exercises (workout_id, exercise_name, weight, reps, elapsed_time, sequence_number) VALUES (1, 'Bench Press', 75, 5, 5, 1)
-INSERT INTO exercises (workout_id, exercise_name, weight, reps, elapsed_time, sequence_number) VALUES (2, 'Squat', 135, 5, 5, 1)
+INSERT INTO exercises (workout_id, exercise_name, weight, reps, sets, elapsed_time, sequence_number, exercise_date) VALUES (1, 'Squat', 135, 5, 3, 5, 1, '2013-01-02')
+INSERT INTO exercises (workout_id, exercise_name, weight, reps, sets, elapsed_time, sequence_number, exercise_date) VALUES (1, 'Squat', 135, 5, 3, 5, 1, '2013-01-02')
+INSERT INTO exercises (workout_id, exercise_name, weight, reps, sets, elapsed_time, sequence_number, exercise_date) VALUES (1, 'Squat', 135, 5, 3, 5, 1, '2013-01-02')
+INSERT INTO exercises (workout_id, exercise_name, weight, reps, sets, elapsed_time, sequence_number, exercise_date) VALUES (1, 'Bench Press', 75, 3, 5, 5, 1, '2013-01-02')
+INSERT INTO exercises (workout_id, exercise_name, weight, reps, sets, elapsed_time, sequence_number, exercise_date) VALUES (2, 'Squat', 135, 5, 3, 5, 1, '2013-01-01')
 
 INSERT INTO weight_measurements (athlete_id, weight, date) VALUES (1,123,'2013-01-01')
 INSERT INTO weight_measurements (athlete_id, weight, date) VALUES (1,123,'2013-01-02')

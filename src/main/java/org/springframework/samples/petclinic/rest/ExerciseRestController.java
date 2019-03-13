@@ -15,8 +15,12 @@
  */
 package org.springframework.samples.petclinic.rest;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -37,6 +41,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -83,10 +88,58 @@ public class ExerciseRestController {
 			return new ResponseEntity<Exercise>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Exercise>(exercise, HttpStatus.OK);
-	}
+    }
+
+    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Collection<Exercise>> getExerciseByDateRange(
+            @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "workoutId") int workoutId) {
+
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        Date startDate = null;
+        Date endDate = null;
+        try{
+            startDate = df.parse(startDateString);
+            endDate = df.parse(endDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Collection<Exercise> exercise = this.clinicService
+                .findExercisesByDateBetweenAndWorkoutId(startDate, endDate, workoutId);
+        if (exercise == null) {
+            return new ResponseEntity<Collection<Exercise>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Collection<Exercise>>(exercise, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
+    @RequestMapping(value = "/dateBetweenCategory", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Collection<Exercise>> getExerciseByDateRangeAndCategory(
+            @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "exerciseName") String exerciseName, @RequestParam(name = "workoutId") int workoutId) {
+
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        Date startDate = null;
+        Date endDate = null;
+        try{
+            startDate = df.parse(startDateString);
+            endDate = df.parse(endDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Collection<Exercise> exercise = this.clinicService
+                .findExercisesByDateBetweenAndExerciseNameAndWorkoutId(startDate, endDate, exerciseName, workoutId);
+        if (exercise == null) {
+            return new ResponseEntity<Collection<Exercise>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Collection<Exercise>>(exercise, HttpStatus.OK);
+    }
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
-	@RequestMapping(value = "/{workoutId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/add/{workoutId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Exercise> addExercise(@PathVariable("workoutId") int workoutId, @RequestBody @Valid Exercise exercise, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
 		HttpHeaders headers = new HttpHeaders();

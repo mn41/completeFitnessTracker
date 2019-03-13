@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import org.springframework.samples.petclinic.rest.JacksonCustomExerciseDeserializer;
 import org.springframework.samples.petclinic.rest.JacksonCustomExerciseSerializer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -38,8 +44,17 @@ public class Exercise extends BaseEntity{
     @Column(name = "reps")
     private double reps;
 
+    @Column(name = "sets")
+    private double sets;
+
     @Column (name = "elapsed_time")
     private double elapsedTime;
+
+    @Column(name = "exercise_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date date;
 
     //Order that the exercise was done in workout
     @Column (name = "sequence_number")
@@ -81,6 +96,15 @@ public class Exercise extends BaseEntity{
         this.reps = reps;
     }
 
+    public double getSets() {
+        return this.sets;
+    }
+
+    public void setSets(double sets) {
+        this.sets = sets;
+    }
+
+
     public double getElapsedTime() {
         return this.elapsedTime;
     }
@@ -95,6 +119,14 @@ public class Exercise extends BaseEntity{
 
     public void setSequenceNumber(int sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Workout getWorkout() {

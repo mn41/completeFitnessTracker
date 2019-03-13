@@ -48,23 +48,54 @@ public class JacksonCustomExerciseDeserializer extends StdDeserializer<Exercise>
 	@Override
 	public Exercise deserialize(JsonParser parser, DeserializationContext context)	throws IOException, JsonProcessingException {
         Exercise exercise = new Exercise();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         JsonNode node = parser.getCodec().readTree(parser);
-
+        Date date;
         int exerciseId = node.get("id").asInt();
-        String exerciseName = node.get("exerciseName").asText(null);
-        double weight = node.get("weight").asDouble();
-        double reps = node.get("reps").asDouble();
-        double elapsedTime = node.get("elapsedTime").asDouble();
-        int sequenceNumber = node.get("sequenceNumber").asInt();
+
+        if (!(exerciseId == -1)) {
+			exercise.setId(exerciseId);
+        }
+
+        if(node.has("exerciseName")){
+            String exerciseName = node.get("exerciseName").asText(null);
+            exercise.setExerciseName(exerciseName);
+        }
+
+        if(node.has("weight")){
+            double weight = node.get("weight").asDouble();
+            exercise.setWeight(weight);
+        }
+
+        if(node.has("reps")){
+            double reps = node.get("reps").asDouble();
+            exercise.setReps(reps);
+        }
+
+        if(node.has("elapsedTime")){
+            double elapsedTime = node.get("elapsedTime").asDouble();
+            exercise.setElapsedTime(elapsedTime);
+        }
+
+        if(node.has("date")){
+            String dateStr = node.get("date").asText(null);
+            try {
+                date = formatter.parse(dateStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                throw new IOException(e);
+            }
+            exercise.setDate(date);
+        }
+
+        if(node.has("sequenceNumber")){
+            int sequenceNumber = node.get("sequenceNumber").asInt();
+            exercise.setSequenceNumber(sequenceNumber);
+        }
 
 		if (!(exerciseId == -1)) {
 			exercise.setId(exerciseId);
         }
-        exercise.setExerciseName(exerciseName);
-        exercise.setWeight(weight);
-        exercise.setReps(reps);
-        exercise.setElapsedTime(elapsedTime);
-        exercise.setSequenceNumber(sequenceNumber);
 
         return exercise;
     }

@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Exercise;
@@ -40,6 +41,10 @@ public interface ExerciseRepository {
     Collection<Exercise> findAll() throws DataAccessException;
 
     Collection<Exercise> findByWorkoutId(int workoutId) throws DataAccessException;
+
+    Collection<Exercise> findByDateBetweenAndWorkoutId(Date startDate, Date endDate, int workoutId) throws DataAccessException;
+
+    Collection<Exercise> findByDateBetweenAndExerciseNameAndWorkoutId(Date startDate, Date endDate, String category, int workoutId) throws DataAccessException;
 
 	Exercise findById(int id) throws DataAccessException;
 

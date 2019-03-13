@@ -17,6 +17,8 @@
 package org.springframework.samples.petclinic.rest;
 
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 import org.springframework.samples.petclinic.model.Exercise;
 
@@ -45,6 +47,9 @@ public class JacksonCustomExerciseSerializer extends StdSerializer<Exercise> {
 		if (exercise == null)  {
 			throw new IOException("Cannot serialize Exercise object - exercise or exercise.pet is null");
         }
+
+        Format formatter = new SimpleDateFormat("yyyy/MM/dd");
+
 		jgen.writeStartObject();
 		if (exercise.getId() == null) {
 			jgen.writeNullField("id");
@@ -52,11 +57,16 @@ public class JacksonCustomExerciseSerializer extends StdSerializer<Exercise> {
 			jgen.writeNumberField("id", exercise.getId());
         }
 
+
+
         jgen.writeStringField("exerciseName", exercise.getExerciseName());
         jgen.writeNumberField("weight", exercise.getWeight());
         jgen.writeNumberField("reps", exercise.getReps());
+        jgen.writeNumberField("sets", exercise.getSequenceNumber());
         jgen.writeNumberField("elapsedTime", exercise.getElapsedTime());
+        jgen.writeStringField("date", formatter.format(exercise.getDate()));
         jgen.writeNumberField("sequenceNumber", exercise.getSequenceNumber());
+
 
 		jgen.writeEndObject();
 	}
