@@ -34,7 +34,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.model.Athlete;
 import org.springframework.samples.petclinic.model.Food;
 import org.springframework.samples.petclinic.model.Meal;
-import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;

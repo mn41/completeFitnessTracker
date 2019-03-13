@@ -21,8 +21,6 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 
 import org.springframework.samples.petclinic.model.Meal;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Food;
 
 import com.fasterxml.jackson.core.JsonGenerator;

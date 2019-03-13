@@ -20,10 +20,9 @@ import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
-import org.springframework.samples.petclinic.model.Workout;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Exercise;
+import org.springframework.samples.petclinic.model.Workout;
+
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

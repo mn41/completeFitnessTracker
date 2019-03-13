@@ -21,8 +21,6 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 
 import org.springframework.samples.petclinic.model.Athlete;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.WeightMeasurement;
 import org.springframework.samples.petclinic.model.Food;
 import org.springframework.samples.petclinic.model.Meal;
