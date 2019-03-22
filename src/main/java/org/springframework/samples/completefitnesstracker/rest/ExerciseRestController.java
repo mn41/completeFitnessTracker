@@ -38,7 +38,6 @@ public class ExerciseRestController {
     @Autowired
 	private TrackerService trackerService;
 
-	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Exercise>> getAllExercises(){
 		Collection<Exercise> exercise = new ArrayList<Exercise>();
@@ -49,7 +48,6 @@ public class ExerciseRestController {
 		return new ResponseEntity<Collection<Exercise>>(exercise, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/search/workout/{workoutId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Exercise>> getAllExercisesByWorkoutId(@PathVariable("workoutId") int workoutId){
 		Collection<Exercise> exercise = new ArrayList<Exercise>();
@@ -60,7 +58,6 @@ public class ExerciseRestController {
 		return new ResponseEntity<Collection<Exercise>>(exercise, HttpStatus.OK);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{exerciseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Exercise> getExercise(@PathVariable("exerciseId") int exerciseId){
 		Exercise exercise = this.trackerService.findExerciseById(exerciseId);
@@ -70,7 +67,6 @@ public class ExerciseRestController {
 		return new ResponseEntity<Exercise>(exercise, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<Exercise>> getExerciseByDateRange(
             @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "workoutId") int workoutId) {
@@ -94,7 +90,6 @@ public class ExerciseRestController {
         return new ResponseEntity<Collection<Exercise>>(exercise, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/dateBetweenCategory", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<Exercise>> getExerciseByDateRangeAndCategory(
             @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "exerciseName") String exerciseName, @RequestParam(name = "workoutId") int workoutId) {
@@ -118,7 +113,6 @@ public class ExerciseRestController {
         return new ResponseEntity<Collection<Exercise>>(exercise, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/add/{workoutId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Exercise> addExercise(@PathVariable("workoutId") int workoutId, @RequestBody @Valid Exercise exercise, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -135,7 +129,6 @@ public class ExerciseRestController {
 		return new ResponseEntity<Exercise>(exercise, headers, HttpStatus.CREATED);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{exerciseId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Exercise> updateExercise(@PathVariable("exerciseId") int exerciseId, @RequestBody @Valid Exercise exercise, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -160,7 +153,6 @@ public class ExerciseRestController {
 		return new ResponseEntity<Exercise>(currentExercise, HttpStatus.NO_CONTENT);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{exerciseId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteExercise(@PathVariable("exerciseId") int exerciseId){

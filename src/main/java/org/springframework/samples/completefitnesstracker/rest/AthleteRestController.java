@@ -31,7 +31,6 @@ public class AthleteRestController {
     @Autowired
 	private TrackerService trackerService;
 
-	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Athlete>> getAllAthletes(){
 		Collection<Athlete> athlete = new ArrayList<Athlete>();
@@ -42,7 +41,6 @@ public class AthleteRestController {
 		return new ResponseEntity<Collection<Athlete>>(athlete, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> getAthleteByUsername(@PathVariable("athleteId") int athleteId){
 		Athlete athlete = this.trackerService.findAthleteById(athleteId);
@@ -52,7 +50,6 @@ public class AthleteRestController {
 		return new ResponseEntity<Athlete>(athlete, HttpStatus.OK);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/login/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> getAthleteByUsername(@PathVariable("username") String username){
 		Athlete athlete = this.trackerService.findAthleteByUsername(username);
@@ -62,7 +59,6 @@ public class AthleteRestController {
 		return new ResponseEntity<Athlete>(athlete, HttpStatus.OK);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> addAthlete(@RequestBody @Valid Athlete athlete, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -77,7 +73,6 @@ public class AthleteRestController {
 		return new ResponseEntity<Athlete>(athlete, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> athleteLogin(@RequestBody @Valid Athlete athlete, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -101,7 +96,6 @@ public class AthleteRestController {
         }
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{athleteId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Athlete> updateAthlete(@PathVariable("athleteId") int athleteId, @RequestBody @Valid Athlete athlete, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -124,7 +118,6 @@ public class AthleteRestController {
 		return new ResponseEntity<Athlete>(currentAthlete, HttpStatus.NO_CONTENT);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{athleteId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteAthlete(@PathVariable("athleteId") int athleteId){

@@ -38,7 +38,6 @@ public class MealRestController {
     @Autowired
 	private TrackerService trackerService;
 
-	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Meal>> getAllMeals(){
 		Collection<Meal> meal = new ArrayList<Meal>();
@@ -49,7 +48,6 @@ public class MealRestController {
 		return new ResponseEntity<Collection<Meal>>(meal, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{mealId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Meal> getMeal(@PathVariable("mealId") int mealId){
 		Meal meal = this.trackerService.findMealById(mealId);
@@ -59,7 +57,6 @@ public class MealRestController {
 		return new ResponseEntity<Meal>(meal, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Meal>> getMealByAthleteId(@PathVariable("athleteId") int athleteId){
 		Collection<Meal> meal = new ArrayList<Meal>();
@@ -70,7 +67,6 @@ public class MealRestController {
 		return new ResponseEntity<Collection<Meal>>(meal, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<Meal>> getMealByDateRange(
             @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "athleteId") int athleteId) {
@@ -95,7 +91,6 @@ public class MealRestController {
     }
 
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/add/{athleteId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Meal> addMeal(
             @RequestBody @Valid Meal meal, @PathVariable("athleteId") int athleteId,
@@ -115,7 +110,6 @@ public class MealRestController {
         return new ResponseEntity<Meal>(meal, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{mealId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Meal> updateMeal(@PathVariable("mealId") int mealId, @RequestBody @Valid Meal meal, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -141,7 +135,6 @@ public class MealRestController {
 		return new ResponseEntity<Meal>(currentMeal, HttpStatus.NO_CONTENT);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{mealId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteMeal(@PathVariable("mealId") int mealId){

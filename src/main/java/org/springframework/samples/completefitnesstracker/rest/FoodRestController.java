@@ -32,7 +32,6 @@ public class FoodRestController {
     @Autowired
 	private TrackerService trackerService;
 
-	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Food>> getAllFoods(){
 		Collection<Food> food = new ArrayList<Food>();
@@ -43,7 +42,6 @@ public class FoodRestController {
 		return new ResponseEntity<Collection<Food>>(food, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/search/meal/{mealId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Food>> getFoodsByMealId(@PathVariable("mealId") int mealId){
 		Collection<Food> food = new ArrayList<Food>();
@@ -54,7 +52,6 @@ public class FoodRestController {
 		return new ResponseEntity<Collection<Food>>(food, HttpStatus.OK);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{foodId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Food> getFood(@PathVariable("foodId") int foodId){
 		Food food = this.trackerService.findFoodById(foodId);
@@ -64,7 +61,6 @@ public class FoodRestController {
 		return new ResponseEntity<Food>(food, HttpStatus.OK);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/add/{mealId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Food> addFood(@PathVariable("mealId") int mealId, @RequestBody @Valid Food food, BindingResult bindingResult, UriComponentsBuilder ucBuilder){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -82,7 +78,6 @@ public class FoodRestController {
 		return new ResponseEntity<Food>(food, headers, HttpStatus.CREATED);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{foodId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Food> updateFood(@PathVariable("foodId") int foodId, @RequestBody @Valid Food food, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -108,7 +103,6 @@ public class FoodRestController {
 		return new ResponseEntity<Food>(currentFood, HttpStatus.NO_CONTENT);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{foodId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteFood(@PathVariable("foodId") int foodId){
