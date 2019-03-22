@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.samples.completefitnesstracker.model.Athlete;
 import org.springframework.samples.completefitnesstracker.model.WeightMeasurement;
 import org.springframework.samples.completefitnesstracker.service.TrackerService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +36,6 @@ public class WeightMeasurementRestController {
     @Autowired
     private TrackerService trackerService;
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<WeightMeasurement>> getAllWeightMeasurements() {
         Collection<WeightMeasurement> weightMeasurements = new ArrayList<WeightMeasurement>();
@@ -48,7 +46,6 @@ public class WeightMeasurementRestController {
         return new ResponseEntity<Collection<WeightMeasurement>>(weightMeasurements, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/{weightMeasurementId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<WeightMeasurement> getWeightMeasurement(
             @PathVariable("weightMeasurementId") int weightMeasurementId) {
@@ -59,7 +56,6 @@ public class WeightMeasurementRestController {
         return new ResponseEntity<WeightMeasurement>(weightMeasurement, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<WeightMeasurement>> getWeightMeasurementByDateRange(
             @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "athleteId") int athleteId) {
@@ -83,7 +79,6 @@ public class WeightMeasurementRestController {
         return new ResponseEntity<Collection<WeightMeasurement>>(weightMeasurement, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<WeightMeasurement>> getWeightMeasurementByAthleteId(
             @PathVariable("athleteId") int athleteId) {
@@ -95,7 +90,6 @@ public class WeightMeasurementRestController {
         return new ResponseEntity<Collection<WeightMeasurement>>(weightMeasurement, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/add/{athleteId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<WeightMeasurement> addWeightMeasurement(
             @RequestBody @Valid WeightMeasurement weightMeasurement, @PathVariable("athleteId") int athleteId,
@@ -115,7 +109,6 @@ public class WeightMeasurementRestController {
         return new ResponseEntity<WeightMeasurement>(weightMeasurement, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/{weightMeasurementId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<WeightMeasurement> updateWeightMeasurement(
             @PathVariable("weightMeasurementId") int weightMeasurementId,
@@ -137,7 +130,6 @@ public class WeightMeasurementRestController {
         return new ResponseEntity<WeightMeasurement>(currentWeightMeasurement, HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/{weightMeasurementId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @Transactional
     public ResponseEntity<Void> deleteWeightMeasurement(@PathVariable("weightMeasurementId") int weightMeasurementId) {
