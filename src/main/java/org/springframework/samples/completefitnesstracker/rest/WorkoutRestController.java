@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.samples.completefitnesstracker.model.Athlete;
 import org.springframework.samples.completefitnesstracker.model.Workout;
 import org.springframework.samples.completefitnesstracker.service.TrackerService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +36,6 @@ public class WorkoutRestController {
     @Autowired
 	private TrackerService trackerService;
 
-	@PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Workout>> getAllWorkouts(){
 		Collection<Workout> workout = new ArrayList<Workout>();
@@ -48,7 +46,6 @@ public class WorkoutRestController {
 		return new ResponseEntity<Collection<Workout>>(workout, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{workoutId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Workout> getWorkout(@PathVariable("workoutId") int workoutId){
 		Workout workout = this.trackerService.findWorkoutById(workoutId);
@@ -58,7 +55,6 @@ public class WorkoutRestController {
 		return new ResponseEntity<Workout>(workout, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Workout>> getWorkoutByAthleteId(@PathVariable("athleteId") int athleteId){
 		Collection<Workout> workout = new ArrayList<Workout>();
@@ -69,7 +65,6 @@ public class WorkoutRestController {
 		return new ResponseEntity<Collection<Workout>>(workout, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<Workout>> getWorkoutByDateRange(
             @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "athleteId") int athleteId) {
@@ -94,7 +89,6 @@ public class WorkoutRestController {
     }
 
 
-    @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/add/{athleteId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Workout> addWorkout(
             @RequestBody @Valid Workout workout, @PathVariable("athleteId") int athleteId,
@@ -114,7 +108,6 @@ public class WorkoutRestController {
         return new ResponseEntity<Workout>(workout, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{workoutId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Workout> updateWorkout(@PathVariable("workoutId") int workoutId, @RequestBody @Valid Workout workout, BindingResult bindingResult){
 		BindingErrorsResponse errors = new BindingErrorsResponse();
@@ -137,7 +130,6 @@ public class WorkoutRestController {
 		return new ResponseEntity<Workout>(currentWorkout, HttpStatus.NO_CONTENT);
 	}
 
-    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{workoutId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@Transactional
 	public ResponseEntity<Void> deleteWorkout(@PathVariable("workoutId") int workoutId){
