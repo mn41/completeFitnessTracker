@@ -67,6 +67,7 @@ public class TrackerServiceImpl implements TrackerService {
 		return mealRepository.findAll();
     }
 
+
     @Override
     @Transactional(readOnly = true)
 	public Collection<Meal> findMealsByAthleteId(int athleteId) throws DataAccessException {
@@ -77,7 +78,13 @@ public class TrackerServiceImpl implements TrackerService {
     @Transactional(readOnly = true)
 	public Collection<Meal> findMealsByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException {
 		return mealRepository.findByDateBetweenAndAthleteId(startDate, endDate, athleteId);
-	}
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+	public Collection<Meal> findRecentMealByAthleteId(int athleteId) throws DataAccessException {
+		return mealRepository.findTop1ByAthleteIdOrderByDateDesc(athleteId);
+    }
 
 	@Override
 	@Transactional
@@ -236,6 +243,12 @@ public class TrackerServiceImpl implements TrackerService {
 	@Transactional(readOnly = true)
 	public Collection<Workout> findAllWorkouts() throws DataAccessException {
 		return workoutRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+	public Collection<Workout> findRecentWorkoutByAthleteId(int athleteId) throws DataAccessException {
+		return workoutRepository.findTop1ByAthleteIdOrderByDateDesc(athleteId);
     }
 
     @Override

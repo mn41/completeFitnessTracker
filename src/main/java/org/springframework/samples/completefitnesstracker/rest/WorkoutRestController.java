@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.completefitnesstracker.model.Athlete;
+import org.springframework.samples.completefitnesstracker.model.Exercise;
 import org.springframework.samples.completefitnesstracker.model.Workout;
 import org.springframework.samples.completefitnesstracker.service.TrackerService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -69,6 +70,18 @@ public class WorkoutRestController {
 		return new ResponseEntity<Collection<Workout>>(workout, HttpStatus.OK);
     }
 
+    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+	@RequestMapping(value = "/recent/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Collection<Workout>> getRecentWorkoutByAthleteId(@PathVariable("athleteId") int athleteId){
+		Collection<Workout> workout = new ArrayList<Workout>();
+		workout.addAll(this.trackerService.findRecentWorkoutByAthleteId(athleteId));
+		if (workout.isEmpty()){
+			return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Workout>>(workout, HttpStatus.OK);
+    }
+
+
     @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<Workout>> getWorkoutByDateRange(
@@ -106,11 +119,23 @@ public class WorkoutRestController {
             headers.add("errors", errors.toJSON());
             return new ResponseEntity<Workout>(headers, HttpStatus.BAD_REQUEST);
         }
-        Athlete athlete = this.trackerService.findAthleteById(athleteId);
-        workout.setAthlete(athlete);
-        this.trackerService.saveWorkout(workout);
-        headers.setLocation(
-                ucBuilder.path("/api/workouts/{id}").buildAndExpand(workout.getId()).toUri());
+
+        Collection<Workout> dateOfWorkout = this.trackerService
+                .findWorkoutsByDateBetweenAndAthleteId(workout.getDate(), workout.getDate(), athleteId);
+        if (dateOfWorkout.isEmpty()){
+            Athlete athlete = this.trackerService.findAthleteById(athleteId);
+            workout.setAthlete(athlete);
+            this.trackerService.saveWorkout(workout);
+
+            headers.setLocation(
+                    ucBuilder.path("/api/workouts/{id}").buildAndExpand(workout.getId()).toUri());
+        } else {
+            Workout currentWorkout = dateOfWorkout.iterator().next();
+            for (Exercise exercise : workout.getExercises()){
+               currentWorkout.addExercise(exercise);
+            }
+            this.trackerService.saveWorkout(currentWorkout);
+        }
         return new ResponseEntity<Workout>(workout, headers, HttpStatus.CREATED);
     }
 
@@ -128,13 +153,10 @@ public class WorkoutRestController {
 		if(currentWorkout == null){
 			return new ResponseEntity<Workout>(HttpStatus.NOT_FOUND);
         }
-
-        currentWorkout.setWorkoutName(workout.getWorkoutName());
-        currentWorkout.setCategory(workout.getCategory());
-        currentWorkout.setDate(workout.getDate());
-
-		this.trackerService.saveWorkout(currentWorkout);
-		return new ResponseEntity<Workout>(currentWorkout, HttpStatus.NO_CONTENT);
+        workout.setAthlete(currentWorkout.getAthlete());
+        this.trackerService.deleteWorkout(currentWorkout);
+		this.trackerService.saveWorkout(workout);
+		return new ResponseEntity<Workout>(workout, HttpStatus.NO_CONTENT);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )

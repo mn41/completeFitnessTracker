@@ -29,10 +29,12 @@ public class JacksonCustomExerciseDeserializer extends StdDeserializer<Exercise>
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         JsonNode node = parser.getCodec().readTree(parser);
         Date date;
-        int exerciseId = node.get("id").asInt();
 
-        if (!(exerciseId == -1)) {
-			exercise.setId(exerciseId);
+        if(node.has("id")) {
+            int exerciseId = node.get("id").asInt();
+            if (!(exerciseId == -1)) {
+                exercise.setId(exerciseId);
+            }
         }
 
         if(node.has("exerciseName")){
@@ -48,6 +50,11 @@ public class JacksonCustomExerciseDeserializer extends StdDeserializer<Exercise>
         if(node.has("reps")){
             double reps = node.get("reps").asDouble();
             exercise.setReps(reps);
+        }
+
+        if(node.has("sets")){
+            double sets = node.get("sets").asDouble();
+            exercise.setSets(sets);
         }
 
         if(node.has("elapsedTime")){
@@ -69,10 +76,6 @@ public class JacksonCustomExerciseDeserializer extends StdDeserializer<Exercise>
         if(node.has("sequenceNumber")){
             int sequenceNumber = node.get("sequenceNumber").asInt();
             exercise.setSequenceNumber(sequenceNumber);
-        }
-
-		if (!(exerciseId == -1)) {
-			exercise.setId(exerciseId);
         }
 
         return exercise;

@@ -24,7 +24,8 @@ public interface TrackerService {
     Collection<Meal> findAllMeals() throws DataAccessException;
     Collection<Meal> findMealsByAthleteId(int athleteId);
     Collection<Meal> findMealsByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException;
-	void saveMeal(Meal meal) throws DataAccessException;
+    Collection<Meal> findRecentMealByAthleteId(int athleteId);
+    void saveMeal(Meal meal) throws DataAccessException;
     void deleteMeal(Meal meal) throws DataAccessException;
 
     Food findFoodById(int id);
@@ -42,6 +43,7 @@ public interface TrackerService {
 
     Workout findWorkoutById(int id);
     Collection<Workout> findAllWorkouts() throws DataAccessException;
+    Collection<Workout> findRecentWorkoutByAthleteId(int athleteId);
     Collection<Workout> findWorkoutsByAthleteId(int athleteId);
     Collection<Workout> findWorkoutsByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException;
 	void saveWorkout(Workout workout) throws DataAccessException;

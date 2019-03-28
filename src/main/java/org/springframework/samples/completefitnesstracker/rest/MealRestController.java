@@ -94,6 +94,16 @@ public class MealRestController {
         return new ResponseEntity<Collection<Meal>>(meal, HttpStatus.OK);
     }
 
+    @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
+	@RequestMapping(value = "/recent/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Collection<Meal>> getRecentMealByAthleteId(@PathVariable("athleteId") int athleteId){
+		Collection<Meal> meal = new ArrayList<Meal>();
+		meal.addAll(this.trackerService.findRecentMealByAthleteId(athleteId));
+		if (meal.isEmpty()){
+			return new ResponseEntity<Collection<Meal>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Meal>>(meal, HttpStatus.OK);
+    }
 
     @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/add/{athleteId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

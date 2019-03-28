@@ -11,6 +11,8 @@ public interface WorkoutRepository extends JpaRepository<Workout, Integer>{
 
     Collection<Workout> findByAthleteId(int athleteId) throws DataAccessException;
 
+    Collection<Workout> findTop1ByAthleteIdOrderByDateDesc(int athleteId) throws DataAccessException;
+
     Collection<Workout> findByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException;
 
 	Workout findById(int id) throws DataAccessException;
