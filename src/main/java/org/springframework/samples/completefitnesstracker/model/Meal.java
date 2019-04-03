@@ -184,6 +184,7 @@ public class Meal extends BaseEntity{
             ", fat='" + getFat() + "'" +
             ", carbohydrates='" + getCarbohydrates() + "'" +
             ", protein='" + getProtein() + "'" +
+            ", protein='" + getFoods() + "'" +
             "}";
     }
 

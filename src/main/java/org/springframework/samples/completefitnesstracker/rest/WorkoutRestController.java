@@ -72,9 +72,9 @@ public class WorkoutRestController {
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/recent/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Collection<Workout>> getRecentWorkoutByAthleteId(@PathVariable("athleteId") int athleteId){
+	public ResponseEntity<Collection<Workout>> getRecentWorkoutByAthleteId(@PathVariable("athleteId") int athleteId, @RequestParam(name = "category") String category){
 		Collection<Workout> workout = new ArrayList<Workout>();
-		workout.addAll(this.trackerService.findRecentWorkoutByAthleteId(athleteId));
+		workout.addAll(this.trackerService.findRecentWorkoutByAthleteIdAndCategory(athleteId, category));
 		if (workout.isEmpty()){
 			return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
 		}
@@ -85,7 +85,7 @@ public class WorkoutRestController {
     @PreAuthorize("hasRole(@roles.VET_ADMIN)")
     @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<Workout>> getWorkoutByDateRange(
-            @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "athleteId") int athleteId) {
+            @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "athleteId") int athleteId, @RequestParam(name = "category") String category) {
 
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         Date startDate = null;
@@ -99,7 +99,7 @@ public class WorkoutRestController {
 
 
         Collection<Workout> workout = this.trackerService
-                .findWorkoutsByDateBetweenAndAthleteId(startDate, endDate, athleteId);
+                .findWorkoutsByDateBetweenAndAthleteIdAndCategory(startDate, endDate, athleteId, category);
         if (workout == null) {
             return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
         }
@@ -121,7 +121,7 @@ public class WorkoutRestController {
         }
 
         Collection<Workout> dateOfWorkout = this.trackerService
-                .findWorkoutsByDateBetweenAndAthleteId(workout.getDate(), workout.getDate(), athleteId);
+                .findWorkoutsByDateBetweenAndAthleteIdAndCategory(workout.getDate(), workout.getDate(), athleteId, workout.getCategory());
         if (dateOfWorkout.isEmpty()){
             Athlete athlete = this.trackerService.findAthleteById(athleteId);
             workout.setAthlete(athlete);

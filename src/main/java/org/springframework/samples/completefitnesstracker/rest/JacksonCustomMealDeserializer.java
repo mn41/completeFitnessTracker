@@ -27,17 +27,12 @@ public class JacksonCustomMealDeserializer extends StdDeserializer<Meal> {
 
 	@Override
 	public Meal deserialize(JsonParser parser, DeserializationContext context)	throws IOException, JsonProcessingException {
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         ObjectMapper mapper = new ObjectMapper();
         Meal meal = new Meal();
         Date date = null;
         JsonNode node = parser.getCodec().readTree(parser);
-        int mealId = node.get("id").asInt();
-        String mealName = node.get("mealName").asText(null);
-		double calories = node.get("calories").asDouble();
-        double fat = node.get("fat").asDouble();
-        double carbohydrates = node.get("carbohydrates").asDouble();
-        double protein = node.get("protein").asDouble();
         String dateStr = node.get("date").asText(null);
 		try {
 			date = formatter.parse(dateStr);
@@ -46,15 +41,38 @@ public class JacksonCustomMealDeserializer extends StdDeserializer<Meal> {
 			throw new IOException(e);
 		}
 
-		if (!(mealId == -1)) {
-			meal.setId(mealId);
+		if(node.has("id")) {
+            int mealId = node.get("id").asInt();
+            if (!(mealId == -1)) {
+                meal.setId(mealId);
+            }
         }
-        meal.setMealName(mealName);
-        meal.setCalories(calories);
-        meal.setFat(fat);
-        meal.setCarbohydrates(carbohydrates);
-        meal.setProtein(protein);
+        if(node.has("mealName")) {
+            String mealName = node.get("mealName").asText(null);
+            meal.setMealName(mealName);
+        }
+
+        if(node.has("fat")) {
+            double fat = node.get("fat").asDouble();
+            meal.setFat(fat);
+        }
+
+        if(node.has("carbohydrates")) {
+            double carbohydrates = node.get("carbohydrates").asDouble();
+            meal.setCarbohydrates(carbohydrates);
+        }
+
+        if(node.has("protein")) {
+            double protein = node.get("protein").asDouble();
+            meal.setProtein(protein);
+        }
+
+        if(node.has("calories")) {
+            double calories = node.get("calories").asDouble();
+            meal.setCalories(calories);
+        }
         meal.setDate(date);
+
         if (node.has("foods")) {
             JsonNode foods_node = node.get("foods");
             Food[] foods = mapper.treeToValue(foods_node, Food[].class);

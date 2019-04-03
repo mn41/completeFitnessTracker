@@ -25,9 +25,11 @@ public class JacksonCustomFoodDeserializer extends StdDeserializer<Food> {
         Food food = new Food();
         JsonNode node = parser.getCodec().readTree(parser);
 
-        int foodId = node.get("id").asInt();
-        if (!(foodId == -1)) {
-			food.setId(foodId);
+        if(node.has("id")){
+            int foodId = node.get("id").asInt();
+            if (!(foodId == -1)) {
+                food.setId(foodId);
+            }
         }
         if(node.has("foodName")){
         String foodName = node.get("foodName").asText(null);
