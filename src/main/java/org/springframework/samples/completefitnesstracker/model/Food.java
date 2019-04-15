@@ -36,7 +36,7 @@ public class Food extends BaseEntity{
     @Column(name = "protein")
     private double protein;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "meal_id")
     private Meal meal;
 

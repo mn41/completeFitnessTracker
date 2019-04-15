@@ -4,10 +4,10 @@ INSERT IGNORE INTO athletes (username, password, email) VALUES ('deleteuser', 'd
 INSERT IGNORE INTO athletes (username, password, email) VALUES ('abcd3', '12345', 'ead@bc.com');
 
 
-INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'breakfast', '2013-01-01', 170, 10, 10, 10);
-INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'lunch', '2013-01-01', 170, 10, 10, 10);
-INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'dinner', '2013-01-02', 1700, 100, 100, 100);
-INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (2,'dinner', '2013-01-02', 1700, 100, 100, 100);
+INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'Breakfast', '2013-01-01', 170, 10, 10, 10);
+INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'Lunch', '2013-01-01', 170, 10, 10, 10);
+INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (1,'Dinner', '2013-01-02', 1700, 100, 100, 100);
+INSERT IGNORE INTO meals (athlete_id, meal_name, meal_date, calories, fat, carbohydrates, protein) VALUES (2,'Dinner', '2013-01-02', 1700, 100, 100, 100);
 
 
 INSERT IGNORE INTO foods (meal_id, servings, food_name, calories, fat, carbohydrates, protein) VALUES (1, 1, 'test_food', 17, 1, 1, 1);

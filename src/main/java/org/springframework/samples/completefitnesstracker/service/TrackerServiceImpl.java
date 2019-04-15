@@ -67,6 +67,7 @@ public class TrackerServiceImpl implements TrackerService {
 		return mealRepository.findAll();
     }
 
+
     @Override
     @Transactional(readOnly = true)
 	public Collection<Meal> findMealsByAthleteId(int athleteId) throws DataAccessException {
@@ -77,7 +78,19 @@ public class TrackerServiceImpl implements TrackerService {
     @Transactional(readOnly = true)
 	public Collection<Meal> findMealsByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException {
 		return mealRepository.findByDateBetweenAndAthleteId(startDate, endDate, athleteId);
-	}
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+	public Collection<Meal> findRecentMealByAthleteId(int athleteId) throws DataAccessException {
+		return mealRepository.findTop1ByAthleteIdOrderByDateDesc(athleteId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+	public Collection<Meal> findRecentMealDateByAthleteId(int athleteId) throws DataAccessException {
+		return mealRepository.findTop1ByAthleteIdOrderByDateDesc(athleteId);
+    }
 
 	@Override
 	@Transactional
@@ -240,14 +253,20 @@ public class TrackerServiceImpl implements TrackerService {
 
     @Override
     @Transactional(readOnly = true)
+	public Collection<Workout> findRecentWorkoutByAthleteIdAndCategory(int athleteId, String category) throws DataAccessException {
+		return workoutRepository.findTop1ByAthleteIdAndCategoryOrderByDateDesc(athleteId, category);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
 	public Collection<Workout> findWorkoutsByAthleteId(int athleteId) throws DataAccessException {
 		return workoutRepository.findByAthleteId(athleteId);
     }
 
     @Override
     @Transactional(readOnly = true)
-	public Collection<Workout> findWorkoutsByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException {
-		return workoutRepository.findByDateBetweenAndAthleteId(startDate, endDate, athleteId);
+	public Collection<Workout> findWorkoutsByDateBetweenAndAthleteIdAndCategory(Date startDate, Date endDate, int athleteId, String category) throws DataAccessException {
+		return workoutRepository.findByDateBetweenAndAthleteIdAndCategory(startDate, endDate, athleteId, category);
 	}
 
 	@Override

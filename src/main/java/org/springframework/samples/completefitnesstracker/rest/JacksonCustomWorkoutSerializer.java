@@ -51,6 +51,7 @@ public class JacksonCustomWorkoutSerializer extends StdSerializer<Workout> {
             jgen.writeStringField("exerciseName", exercise.getExerciseName());
             jgen.writeNumberField("weight", exercise.getWeight());
             jgen.writeNumberField("reps", exercise.getReps());
+            jgen.writeNumberField("sets", exercise.getSets());
             jgen.writeNumberField("elapsedTime", exercise.getElapsedTime());
             jgen.writeNumberField("sequenceNumber", exercise.getSequenceNumber());
 

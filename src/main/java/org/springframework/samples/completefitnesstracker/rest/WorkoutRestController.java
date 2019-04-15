@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.samples.completefitnesstracker.model.Athlete;
+import org.springframework.samples.completefitnesstracker.model.Exercise;
 import org.springframework.samples.completefitnesstracker.model.Workout;
 import org.springframework.samples.completefitnesstracker.service.TrackerService;
 import org.springframework.validation.BindingResult;
@@ -65,9 +66,20 @@ public class WorkoutRestController {
 		return new ResponseEntity<Collection<Workout>>(workout, HttpStatus.OK);
     }
 
+	@RequestMapping(value = "/recent/athlete/{athleteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Collection<Workout>> getRecentWorkoutByAthleteId(@PathVariable("athleteId") int athleteId, @RequestParam(name = "category") String category){
+		Collection<Workout> workout = new ArrayList<Workout>();
+		workout.addAll(this.trackerService.findRecentWorkoutByAthleteIdAndCategory(athleteId, category));
+		if (workout.isEmpty()){
+			return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Collection<Workout>>(workout, HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/dateBetween", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Collection<Workout>> getWorkoutByDateRange(
-            @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "athleteId") int athleteId) {
+            @RequestParam(name = "startDate") String startDateString, @RequestParam(name = "endDate") String endDateString, @RequestParam(name = "athleteId") int athleteId, @RequestParam(name = "category") String category) {
 
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         Date startDate = null;
@@ -81,7 +93,7 @@ public class WorkoutRestController {
 
 
         Collection<Workout> workout = this.trackerService
-                .findWorkoutsByDateBetweenAndAthleteId(startDate, endDate, athleteId);
+                .findWorkoutsByDateBetweenAndAthleteIdAndCategory(startDate, endDate, athleteId, category);
         if (workout == null) {
             return new ResponseEntity<Collection<Workout>>(HttpStatus.NOT_FOUND);
         }
@@ -100,11 +112,23 @@ public class WorkoutRestController {
             headers.add("errors", errors.toJSON());
             return new ResponseEntity<Workout>(headers, HttpStatus.BAD_REQUEST);
         }
-        Athlete athlete = this.trackerService.findAthleteById(athleteId);
-        workout.setAthlete(athlete);
-        this.trackerService.saveWorkout(workout);
-        headers.setLocation(
-                ucBuilder.path("/api/workouts/{id}").buildAndExpand(workout.getId()).toUri());
+
+        Collection<Workout> dateOfWorkout = this.trackerService
+                .findWorkoutsByDateBetweenAndAthleteIdAndCategory(workout.getDate(), workout.getDate(), athleteId, workout.getCategory());
+        if (dateOfWorkout.isEmpty()){
+            Athlete athlete = this.trackerService.findAthleteById(athleteId);
+            workout.setAthlete(athlete);
+            this.trackerService.saveWorkout(workout);
+
+            headers.setLocation(
+                    ucBuilder.path("/api/workouts/{id}").buildAndExpand(workout.getId()).toUri());
+        } else {
+            Workout currentWorkout = dateOfWorkout.iterator().next();
+            for (Exercise exercise : workout.getExercises()){
+               currentWorkout.addExercise(exercise);
+            }
+            this.trackerService.saveWorkout(currentWorkout);
+        }
         return new ResponseEntity<Workout>(workout, headers, HttpStatus.CREATED);
     }
 
@@ -121,13 +145,10 @@ public class WorkoutRestController {
 		if(currentWorkout == null){
 			return new ResponseEntity<Workout>(HttpStatus.NOT_FOUND);
         }
-
-        currentWorkout.setWorkoutName(workout.getWorkoutName());
-        currentWorkout.setCategory(workout.getCategory());
-        currentWorkout.setDate(workout.getDate());
-
-		this.trackerService.saveWorkout(currentWorkout);
-		return new ResponseEntity<Workout>(currentWorkout, HttpStatus.NO_CONTENT);
+        workout.setAthlete(currentWorkout.getAthlete());
+        this.trackerService.deleteWorkout(currentWorkout);
+		this.trackerService.saveWorkout(workout);
+		return new ResponseEntity<Workout>(workout, HttpStatus.NO_CONTENT);
 	}
 
 	@RequestMapping(value = "/{workoutId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

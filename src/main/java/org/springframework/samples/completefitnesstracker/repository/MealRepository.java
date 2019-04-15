@@ -11,6 +11,8 @@ public interface MealRepository  extends JpaRepository<Meal, Integer>{
 
     Collection<Meal> findByAthleteId(int athleteId) throws DataAccessException;
 
+    Collection<Meal> findTop1ByAthleteIdOrderByDateDesc(int athleteId) throws DataAccessException;
+
     Collection<Meal> findByDateBetweenAndAthleteId(Date startDate, Date endDate, int athleteId) throws DataAccessException;
 
 	Meal findById(int id) throws DataAccessException;
